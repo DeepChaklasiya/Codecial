@@ -10,6 +10,11 @@ const port = process.env.PORT || 5000;
 const app = express();
 dotenv.config();
 
+// Routes
+const userRoute = require('./Routes/users');
+const authRoute = require('./Routes/auth');
+const postRoute = require('./Routes/posts');
+
 const url = process.env.MONGO_URL;
 mongoose.connect(process.env.MONGO_URL, 
 {   
@@ -29,6 +34,11 @@ app.use(morgan("common"));
 app.get('/', (req, res) => {
     res.json('Welcome to home page')
 })
+
+app.use('/api/users', userRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/posts', postRoute);
+
 
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
