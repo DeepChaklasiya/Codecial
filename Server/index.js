@@ -1,7 +1,7 @@
 const express = require('express');
 
 const helmet = require('helmet');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
@@ -11,15 +11,24 @@ const app = express();
 dotenv.config();
 
 const url = process.env.MONGO_URL;
-mongoose.connect('mongodb+srv://codecial:codecialmongodbpassword@codecial.4fdwd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', 
+mongoose.connect(process.env.MONGO_URL, 
 {   
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
 }, 
     () => {
     console.log('Connected to database');
 });
 
+// middleware
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("common"));
+
+// routes
+app.get('/', (req, res) => {
+    res.json('Welcome to home page')
+})
 
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
