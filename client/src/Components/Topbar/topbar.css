@@ -1,0 +1,7 @@
+.height150{
+    height : 55px;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
