@@ -3,6 +3,8 @@ import Online from "../Online/Online";
 import "./rightbar.css";
 
 export default function Rightbar() {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <div
       className="container-fluid"
@@ -11,7 +13,7 @@ export default function Rightbar() {
       <div className="row">
         <div className="d-flex my-3 mx-2">
           <div>
-            <img src="/assets/gift.png" height="40px" width="40px"></img>
+            <img src={`${PF}gift.png`} height="40px" width="40px"></img>
           </div>
           <div className="ml-1">
             <span>
@@ -23,7 +25,7 @@ export default function Rightbar() {
       <div className="row">
         <div className="my-1 ml-2">
           <img
-            src="/assets/add.png"
+            src={`${PF}add.png`}
             alt=""
             width="95%"
             style={{ borderRadius: "10px" }}

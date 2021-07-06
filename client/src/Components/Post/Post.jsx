@@ -1,13 +1,26 @@
 import { MoreVert } from "@material-ui/icons";
-import { useState } from "react";
-import { Users } from "../../dummyData";
+import { useState, useEffect } from "react";
+import { format } from "timeago.js";
+import axios from "axios";
+import { Link } from "react-router-dom";
+// import { Users } from "../../dummyData";
 
 export default function Post({ post }) {
-  const [like, setLike] = useState(post.like);
+  const [like, setLike] = useState(post.likes.length);
   const [isLike, setIsLike] = useState(false);
+  const [user, setUser] = useState({});
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(`users?username=following`);
+      setUser(res.data);
+    };
+
+    fetchUser();
+  }, [post.userId]);
 
   const likeHandler = () => {
-    console.log("hello");
     setLike(isLike ? like - 1 : like + 1);
     setIsLike(!isLike);
   };
@@ -17,20 +30,17 @@ export default function Post({ post }) {
       <div className="card mb-4">
         <div className="d-flex justify-content-between my-2 ml-3">
           <div>
-            <img
-              src={
-                Users.filter((user) => user.id === post.userId)[0]
-                  .profilePicture
-              }
-              alt=""
-              style={{ height: "27px", width: "27px" }}
-              className="rounded-circle"
-            ></img>
-            <span className="pl-2 ">
-              {Users.filter((user) => user.id === post.userId)[0].username}
-            </span>
+            <Link to={`profile/${user.username}`}>
+              <img
+                src={user.profilePicture || PF + "15.png"}
+                alt=""
+                style={{ height: "27px", width: "27px" }}
+                className="rounded-circle"
+              ></img>
+            </Link>
+            <span className="pl-2 ">{user.username}</span>
             <span className="pl-2 small" style={{ color: "#636763" }}>
-              {post.date}
+              {format(post.createdAt)}
             </span>
           </div>
           <div>
@@ -43,7 +53,7 @@ export default function Post({ post }) {
           </div>
 
           <img
-            src={post.photo}
+            src={PF + post.img}
             alt=""
             className="my-2 mx-3"
             style={{ height: "400px", width: "670px" }}
