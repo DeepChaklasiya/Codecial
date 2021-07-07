@@ -9,8 +9,12 @@ import {
 } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext } from "react";
 
 export default function Topbar() {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { user } = useContext(AuthContext);
   return (
     <>
       <div className="container-fluid">
@@ -61,12 +65,18 @@ export default function Topbar() {
             </div>
             <div style={{ width: "10%" }}></div>
             <div className="pt-2">
-              <img
-                src="/assets/2.jpeg"
-                alt=""
-                style={{ height: "32px", width: "32px" }}
-                className="rounded-circle"
-              ></img>
+              <Link to={`/profile/${user.username}`}>
+                <img
+                  src={
+                    user.profilePicture
+                      ? PF + user.profilePicture
+                      : PF + "noUserImage.png"
+                  }
+                  alt=""
+                  style={{ height: "32px", width: "32px" }}
+                  className="rounded-circle"
+                ></img>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,26 +1,39 @@
 import { MoreVert } from "@material-ui/icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { format } from "timeago.js";
 import axios from "axios";
 import { Link } from "react-router-dom";
 // import { Users } from "../../dummyData";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
-  const [isLike, setIsLike] = useState(false);
   const [user, setUser] = useState({});
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { user: currentUser } = useContext(AuthContext);
+  const [isLike, setIsLike] = useState(false);
+
+  useEffect(() => {
+    setIsLike(post.likes.includes(currentUser._id));
+  }, [currentUser._id, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`users?username=following`);
+      const res = await axios.get(`/users?userId=${post.userId}`);
       setUser(res.data);
     };
 
     fetchUser();
   }, [post.userId]);
 
-  const likeHandler = () => {
+  const likeHandler = async () => {
+    try {
+      const res = await axios.put(`/posts/${post._id}/like`, {
+        userId: currentUser._id,
+      });
+    } catch (err) {
+      console.log("post file error", err);
+    }
     setLike(isLike ? like - 1 : like + 1);
     setIsLike(!isLike);
   };
@@ -30,9 +43,12 @@ export default function Post({ post }) {
       <div className="card mb-4">
         <div className="d-flex justify-content-between my-2 ml-3">
           <div>
+            {console.log("post", user.username)}
             <Link to={`profile/${user.username}`}>
               <img
-                src={user.profilePicture || PF + "15.png"}
+                src={
+                  user.profilePicture ? PF + user.profilePicture : PF + "15.png"
+                }
                 alt=""
                 style={{ height: "27px", width: "27px" }}
                 className="rounded-circle"
@@ -62,7 +78,7 @@ export default function Post({ post }) {
         <div className="mx-3 my-3 d-flex justify-content-between">
           <div className="d-flex align-items-center">
             <img
-              src="/assets/4.png"
+              src={PF + "4.png"}
               height="24px"
               width="24px"
               onClick={likeHandler}
@@ -70,7 +86,7 @@ export default function Post({ post }) {
               className="mr-1"
             />
             <img
-              src="/assets/5.png"
+              src={PF + "5.png"}
               height="24px"
               width="24px"
               style={{ cursor: "pointer" }}

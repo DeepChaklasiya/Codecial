@@ -79,7 +79,6 @@ router.put("/:id/like", async (req, res) => {
 
 router.get("/timeline/:userId", async (req, res) => {
   try {
-    console.log("in timeline api");
     const currentUser = await User.findById(req.params.userId);
     const userPosts = await Post.find({ userId: currentUser._id });
 
@@ -98,7 +97,6 @@ router.get("/timeline/:userId", async (req, res) => {
 // All posts of user
 router.get("/profile/:username", async (req, res) => {
   try {
-    console.log("in all post api");
     const user = await User.findOne({ username: req.params.username });
     const posts = await Post.find({ userId: user._id });
 

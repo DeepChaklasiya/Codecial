@@ -1,4 +1,4 @@
-export default function ProfileRightbar() {
+export default function ProfileRightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -13,9 +13,16 @@ export default function ProfileRightbar() {
           </div>
           <div>
             <ul className="list-group">
-              <li>City : &nbsp; Surat</li>
-              <li>From : &nbsp; Gujarat</li>
-              <li>Relationship : &nbsp; Single</li>
+              <li>City : &nbsp; {user.city}</li>
+              <li>From : &nbsp; {user.from}</li>
+              <li>
+                Relationship : &nbsp;{" "}
+                {user.relationship === 1
+                  ? "Single"
+                  : user.relationship === 2
+                  ? "Married"
+                  : "-"}
+              </li>
             </ul>
           </div>
         </div>

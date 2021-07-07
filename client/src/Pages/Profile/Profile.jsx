@@ -3,29 +3,25 @@ import Topbar from "../../Components/Topbar/Topbar";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Feed from "../../Components/Feed/Feed";
 import Rightbar from "../../Components/Rightbar/Rightbar";
-import ProfileRightbar from "../../Components/ProfileRightbar/ProfileRightbar";
 import "./profile.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [user, setUser] = useState({});
+  const username = useParams().username;
 
   useEffect(() => {
     const fetchUser = async () => {
-      console.log("here");
-      // const res = await axios.get(`users?username=following`);
-      const res = await axios.get(
-        "http://localhost:5000/api/users?username=following"
-      );
+      const res = await axios.get(`/users?username=${username}`);
       setUser(res.data);
-      console.log(res.data);
     };
 
     fetchUser();
-  }, []);
+  }, [username]);
 
   return (
     <>
@@ -40,13 +36,19 @@ export default function Profile() {
               <div className="mb-10">
                 <div className="mainImage">
                   <img
-                    src={`${PF}15.png`}
+                    src={
+                      user.coverPicture ? PF + user.coverPicture : PF + "16.png"
+                    }
                     style={{ width: "100%", height: "100%" }}
                   ></img>
                 </div>
                 <div className="subImage">
                   <img
-                    src={`${PF}9.png`}
+                    src={
+                      user.profilePicture
+                        ? PF + user.profilePicture
+                        : PF + "noUserImage.png"
+                    }
                     style={{
                       width: "100%",
                       height: "100%",
@@ -64,10 +66,10 @@ export default function Profile() {
               <div className="container-fuild">
                 <div className="row">
                   <div className="col-8">
-                    <Feed username={"following"} />
+                    <Feed username={username} />
                   </div>
                   <div className="col-4">
-                    <ProfileRightbar />
+                    <Rightbar user={user} />
                   </div>
                 </div>
               </div>
