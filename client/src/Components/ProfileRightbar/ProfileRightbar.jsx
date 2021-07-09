@@ -9,14 +9,12 @@ export default function ProfileRightbar({ user }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(
-    currentUser.following.includes(user._id)
+    currentUser?.following.includes(user._id)
   );
 
   useEffect(() => {
     console.log();
-    setFollowed(currentUser.following.includes(user._id));
-    console.log("follow array : ", currentUser.following);
-    console.log("follow", followed);
+    setFollowed(currentUser?.following.includes(user._id));
   }, [currentUser, user._id]);
 
   const handleClick = async () => {
@@ -56,7 +54,7 @@ export default function ProfileRightbar({ user }) {
         className="container-fluid"
         style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
       >
-        {user.username !== currentUser.username && (
+        {user?.username !== currentUser?.username && (
           <div className="row mb-3 mb-2">
             <div>
               <button

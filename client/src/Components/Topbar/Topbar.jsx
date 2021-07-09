@@ -65,10 +65,10 @@ export default function Topbar() {
             </div>
             <div style={{ width: "10%" }}></div>
             <div className="pt-2">
-              <Link to={`/profile/${user.username}`}>
+              <Link to={`/profile/${user?.username}`}>
                 <img
                   src={
-                    user.profilePicture
+                    user && user.profilePicture
                       ? PF + user.profilePicture
                       : PF + "noUserImage.png"
                   }
