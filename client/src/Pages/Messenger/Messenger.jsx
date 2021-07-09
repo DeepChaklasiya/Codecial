@@ -27,7 +27,17 @@ export default function Messenger() {
     getConversation();
   }, [user._id]);
 
-  console.log(currentChat);
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await axios.get("/messages/" + currentChat?._id);
+        setMessages([res.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMessages();
+  }, [currentChat]);
 
   return (
     <>
@@ -90,7 +100,9 @@ export default function Messenger() {
                   overflow: "scroll",
                 }}
               >
-                <Message />
+                {messages.map((m) => (
+                  <Message message={m} own={m.sender === user._id} />
+                ))}
               </div>
               <div className="d-flex mb-2">
                 <textarea className="form-control" rows="3"></textarea>
