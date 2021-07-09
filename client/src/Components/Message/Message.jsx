@@ -1,7 +1,8 @@
 import React from "react";
 import "./message.css";
+import { format } from "timeago.js";
 
-export default function Message({ own }) {
+export default function Message({ message, own }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -19,16 +20,15 @@ export default function Message({ own }) {
           }
           style={{ borderRadius: "20px", maxWidth: "400px" }}
         >
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum
-          voluptas, suscipit sit quae animi nam ad quos recusandae, facilis eum,
-          quisquam illo nostrum ab? Consectetur exercitationem inventore
-          incidunt iste molestias!incidunt iste molestias!incidunt iste
+          {message}
           <div
             className={
               own ? "float-right mr-2 blackText" : "float-right mr-2 whiteText"
             }
           >
-            <span style={{ fontSize: "12px" }}>1 hour ago</span>
+            <span style={{ fontSize: "12px" }}>
+              {format(message.createdAt)}
+            </span>
           </div>
         </span>
       </div>

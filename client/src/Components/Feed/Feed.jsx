@@ -27,7 +27,8 @@ export default function Feed({ username }) {
 
   return (
     <div style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}>
-      {username === user?.username && <Share />}
+      {/* {console.log(username, user.username)} */}
+      {(!username || username === user.username) && <Share />}
       {/* <Share /> */}
       {posts.map((p) => (
         <Post key={p._id} post={p} />

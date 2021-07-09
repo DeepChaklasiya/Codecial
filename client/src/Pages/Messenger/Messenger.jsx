@@ -31,7 +31,19 @@ export default function Messenger() {
     const getMessages = async () => {
       try {
         const res = await axios.get("/messages/" + currentChat?._id);
-        setMessages([res.data]);
+        const dummy = res.data;
+        const temp = dummy.map((data) => {
+          return {
+            _id: data._id,
+            conversationId: data.conversationId,
+            sender: data.sender,
+            text: data.text,
+            createdAt: data.createdAt,
+          };
+        });
+        console.log("res.data", res.data);
+        setMessages(temp);
+        console.log(temp);
       } catch (err) {
         console.log(err);
       }
@@ -101,7 +113,13 @@ export default function Messenger() {
                 }}
               >
                 {messages.map((m) => (
-                  <Message message={m} own={m.sender === user._id} />
+                  <div>
+                    <Message
+                      key={m._id}
+                      message={m}
+                      own={m.sender === user._id}
+                    />
+                  </div>
                 ))}
               </div>
               <div className="d-flex mb-2">

@@ -14,8 +14,8 @@ export default function Post({ post }) {
   const [isLike, setIsLike] = useState(false);
 
   useEffect(() => {
-    setIsLike(post.likes.includes(currentUser._id));
-  }, [currentUser._id, post.likes]);
+    setIsLike(post.likes.includes(currentUser?._id));
+  }, [currentUser?._id, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
