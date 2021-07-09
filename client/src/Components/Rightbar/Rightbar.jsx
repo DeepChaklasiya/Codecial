@@ -39,7 +39,7 @@ export default function Rightbar({ user }) {
             <span className="font-weight-bold">Online Friends</span>
             <ul className="list-group">
               {Users.map((user) => (
-                <Online key={user.id} user={user} />
+                <Online key={user._id} user={user} />
               ))}
             </ul>
           </div>
@@ -48,5 +48,9 @@ export default function Rightbar({ user }) {
     );
   };
 
-  return <>{user ? <ProfileRightbar user={user} /> : <HomeRightbar />}</>;
+  return (
+    <>
+      {user ? <ProfileRightbar key={user._id} user={user} /> : <HomeRightbar />}
+    </>
+  );
 }

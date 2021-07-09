@@ -1,6 +1,7 @@
 import { EmojiEmotions, Label, PermMedia, Room } from "@material-ui/icons";
 import { AuthContext } from "../../Context/AuthContext";
 import { useState, useContext, useRef } from "react";
+import { Cancel } from "@material-ui/icons";
 import axios from "axios";
 
 export default function Share() {
@@ -8,25 +9,17 @@ export default function Share() {
   const desc = useRef();
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPost = { userId: user._id, desc: desc.current.value };
     if (file) {
-      let dummyData = new FormData();
+      const data = new FormData();
       const filename = Date.now() + file.name;
-      dummyData.append("file", file);
-      dummyData.append("name", filename);
+      data.append("name", filename);
+      data.append("file", file);
       newPost.img = filename;
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
       try {
-        await axios.post("/upload", dummyData, config);
+        await axios.post("/upload", data);
       } catch (err) {
         console.log(err);
       }
@@ -34,6 +27,7 @@ export default function Share() {
 
     try {
       const res = await axios.post("/posts", newPost);
+      window.location.reload();
     } catch (err) {
       console.log("Share file error", err);
     }
@@ -68,6 +62,25 @@ export default function Share() {
             </div>
           </div>
           <hr />
+          {file && (
+            <div style={{ position: "relative" }}>
+              <img
+                src={URL.createObjectURL(file)}
+                alt=""
+                className="my-2 mx-4"
+                style={{ height: "350px", width: "650px" }}
+              ></img>
+              <Cancel
+                onClick={() => setFile(null)}
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "5px",
+                  cursor: "pointer",
+                }}
+              />
+            </div>
+          )}
           <div className="d-flex align-items-center justify-content-around">
             <div
               className="d-flex justify-content-around mt-1 mb-3 ml-2"

@@ -6,7 +6,12 @@ export default function Online({ user }) {
     <li className="d-flex align-items-center my-2">
       <div className="relativePosition">
         <img
-          src={PF + user.profilePicture}
+          src={
+            // user.profilePicture
+            //   ? PF + user.profilePicture
+            //   : PF + "noUserImage.png"
+            PF + "noUserImage.png"
+          }
           alt=""
           style={{ height: "30px", width: "30px" }}
           className="rounded-circle"
@@ -14,7 +19,7 @@ export default function Online({ user }) {
         <span className="rightbarOnline"></span>
       </div>
       <div style={{ width: "15px" }}></div>
-      <span>{user.username}</span>
+      <span>hello motto</span>
     </li>
   );
 }

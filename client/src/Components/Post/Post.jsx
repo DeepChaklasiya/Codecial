@@ -43,7 +43,6 @@ export default function Post({ post }) {
       <div className="card mb-4">
         <div className="d-flex justify-content-between my-2 ml-3">
           <div>
-            {console.log("post", user.username)}
             <Link to={`profile/${user.username}`}>
               <img
                 src={

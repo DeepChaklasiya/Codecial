@@ -1,5 +1,54 @@
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { Add, Remove } from "@material-ui/icons";
+
 export default function ProfileRightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [friends, setFriends] = useState([]);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
+  const [followed, setFollowed] = useState(
+    currentUser.following.includes(user._id)
+  );
+
+  useEffect(() => {
+    console.log();
+    setFollowed(currentUser.following.includes(user._id));
+    console.log("follow array : ", currentUser.following);
+    console.log("follow", followed);
+  }, [currentUser, user._id]);
+
+  const handleClick = async () => {
+    try {
+      if (followed) {
+        await axios.put(`/users/${user._id}/unfollow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "UNFOLLOW", payload: user._id });
+      } else {
+        await axios.put(`/users/${user._id}/follow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user._id });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setFollowed(!followed);
+  };
+
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const friendList = await axios.get("/users/friends/" + user._id);
+        setFriends(friendList.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFriends();
+  }, [user]);
 
   return (
     <div className="mr-1">
@@ -7,7 +56,21 @@ export default function ProfileRightbar({ user }) {
         className="container-fluid"
         style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
       >
-        <div className="row mb-3">
+        {user.username !== currentUser.username && (
+          <div className="row mb-3 mb-2">
+            <div>
+              <button
+                className="btn btn-primary btn-block d-flex align-items-center border-none"
+                style={{ curson: "pointer" }}
+                onClick={handleClick}
+              >
+                {followed ? "Unfollow" : "Follow"}
+                {followed ? <Remove /> : <Add />}
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="row my-3">
           <div className="mb-1" style={{ width: "100%" }}>
             <div className="font-weight-bold">User Infromation</div>
           </div>
@@ -35,14 +98,35 @@ export default function ProfileRightbar({ user }) {
             <div>
               <div></div>
             </div>
-            <div className="card border-0 ml-2 mb-2" style={{ width: "100px" }}>
-              <img src={`${PF}8.png`} alt="" className="card-img"></img>
-              <div className="card-body text-center" style={{ padding: "0px" }}>
-                <p className="card-text" style={{ fontSize: "15px" }}>
-                  Jnow Snow
-                </p>
-              </div>
-            </div>
+            {friends.map((frnd) => (
+              <Link
+                to={`/profile/${frnd.username}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div
+                  className="card border-0 ml-2 mb-2"
+                  style={{ width: "100px" }}
+                >
+                  <img
+                    src={
+                      frnd.profilePicture
+                        ? PF + frnd.profilePicture
+                        : PF + "noUserImage.png"
+                    }
+                    alt=""
+                    className="card-img"
+                  ></img>
+                  <div
+                    className="card-body text-center"
+                    style={{ padding: "0px" }}
+                  >
+                    <p className="card-text" style={{ fontSize: "15px" }}>
+                      {frnd.username}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

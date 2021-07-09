@@ -17,6 +17,8 @@ dotenv.config();
 const userRoute = require("./Routes/users");
 const authRoute = require("./Routes/auth");
 const postRoute = require("./Routes/posts");
+const conversationsRoute = require("./Routes/conversations");
+const messagesRoute = require("./Routes/messages");
 
 const url = process.env.MONGO_URL;
 mongoose.connect(
@@ -48,24 +50,24 @@ const storage = multer.diskStorage({
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-    console.log(req);
-    cb(null, "justname.jpeg");
+    cb(null, req.body.name);
   },
 });
 
-const upload = multer({ storage });
-
+const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   try {
-    return res.status(200).json("File uploaded successfully");
-  } catch (err) {
-    console.log(err);
+    return res.status(200).json("File uploded successfully");
+  } catch (error) {
+    console.error(error);
   }
 });
 
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
+app.use("/api/conversations", conversationsRoute);
+app.use("/api/messages", messagesRoute);
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);

@@ -1,0 +1,109 @@
+import React from "react";
+import Topbar from "../../Components/Topbar/Topbar";
+import { Search } from "@material-ui/icons";
+import Conversation from "../../Components/Conversation/Conversation";
+import Message from "../../Components/Message/Message";
+import "./messanger.css";
+import Online from "../../Components/Online/Online";
+
+export default function Messenger() {
+  return (
+    <>
+      <Topbar />
+      <div className="container-fluid">
+        <div className="row">
+          <div
+            className="col-3"
+            style={{
+              height: "calc(100vh - 55px)",
+              overflow: "scroll",
+            }}
+          >
+            <div className="row">
+              <div
+                className="m-2 d-flex align-items-center"
+                style={{
+                  height: "40px",
+                  width: "100%",
+                  borderBottom: "1px solid gray",
+                }}
+              >
+                <Search />
+                <input
+                  type="text"
+                  placeholder="Search for Friends ..."
+                  className="form-control border-0"
+                ></input>
+              </div>
+            </div>
+            <div className="row">
+              <Conversation />
+              <Conversation />
+              <Conversation />
+              <Conversation />
+              <Conversation />
+            </div>
+          </div>
+
+          <div
+            className="col-6 hideScrollbar"
+            style={{
+              height: "calc(100vh - 55px)",
+              overflow: "scroll",
+            }}
+          >
+            <div
+              className="d-flex flex-column overflow-scroll"
+              style={{
+                height: "87%",
+                overflow: "scroll",
+              }}
+            >
+              <Message />
+              <Message own={true} />
+              <Message />
+              <Message />
+              <Message own={true} />
+              <Message own={true} />
+              <Message />
+            </div>
+            <div className="d-flex mb-2">
+              <textarea className="form-control" rows="3"></textarea>
+              <button
+                type="submit"
+                class="ml-2 btn btn-primary text-white border-0 px-4"
+                style={{ boxShadow: "none" }}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="col-3"
+            style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
+          >
+            <div className="my-1 ml-3">
+              <div className="py-2" style={{ borderBottom: "1px solid gray" }}>
+                <span className="font-weight-bold">Online Friends</span>
+              </div>
+              <ul className="list-group">
+                {/* {Users.map((user) => ( */}
+                <Online
+                // key={user._id} user={user}
+                />
+                {/* ))} */}
+                <Online />
+                <Online />
+
+                <Online />
+                <Online />
+                <Online />
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
