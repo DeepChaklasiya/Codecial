@@ -1,12 +1,25 @@
 const router = require("express").Router();
 const Message = require("../Models/Message");
 
-router.get("/:id", async (req, res) => {
+router.post("/", async (req, res) => {
+  const newMessage = new Message(req.body);
+
   try {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json(post);
+    const savedMessage = await newMessage.save();
+    res.status(200).json(savedMessage);
   } catch (err) {
-    return res.status(505).json(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/:conversationId", async (req, res) => {
+  try {
+    const messages = await Message.find({
+      conversationId: req.params.conversationId,
+    });
+    res.status(200).json(messages);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

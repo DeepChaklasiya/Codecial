@@ -6,8 +6,6 @@ export default function Message({ own }) {
 
   return (
     <div className={own ? "ownClass" : ""}>
-      {/* <div className="align-items-flex-end"> */}
-      {console.log(own)}
       <div className="mx-1 my-2 d-flex">
         <img
           src={PF + "noUserImage.png"}

@@ -5,8 +5,30 @@ import Conversation from "../../Components/Conversation/Conversation";
 import Message from "../../Components/Message/Message";
 import "./messanger.css";
 import Online from "../../Components/Online/Online";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Messenger() {
+  const [conversations, setConversations] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const res = await axios.get("/conversations/" + user._id);
+        setConversations(res.data);
+      } catch (err) {
+        console.log("Messanger file", err);
+      }
+    };
+    getConversation();
+  }, [user._id]);
+
+  console.log(currentChat);
+
   return (
     <>
       <Topbar />
@@ -37,47 +59,55 @@ export default function Messenger() {
               </div>
             </div>
             <div className="row">
-              <Conversation />
-              <Conversation />
-              <Conversation />
-              <Conversation />
-              <Conversation />
+              {conversations.map((c) => (
+                <div
+                  onClick={() => setCurrentChat(c)}
+                  className="ml-2 mt-2 mr-2 d-flex align-items-center hoverName"
+                  style={{
+                    height: "40px",
+                    width: "100%",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Conversation conversation={c} currentUser={user} />
+                </div>
+              ))}
             </div>
           </div>
 
-          <div
-            className="col-6 hideScrollbar"
-            style={{
-              height: "calc(100vh - 55px)",
-              overflow: "scroll",
-            }}
-          >
+          {currentChat ? (
             <div
-              className="d-flex flex-column overflow-scroll"
+              className="col-6 hideScrollbar"
               style={{
-                height: "87%",
+                height: "calc(100vh - 55px)",
                 overflow: "scroll",
               }}
             >
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message />
-              <Message own={true} />
-              <Message own={true} />
-              <Message />
-            </div>
-            <div className="d-flex mb-2">
-              <textarea className="form-control" rows="3"></textarea>
-              <button
-                type="submit"
-                class="ml-2 btn btn-primary text-white border-0 px-4"
-                style={{ boxShadow: "none" }}
+              <div
+                className="d-flex flex-column overflow-scroll"
+                style={{
+                  height: "87%",
+                  overflow: "scroll",
+                }}
               >
-                Send
-              </button>
+                <Message />
+              </div>
+              <div className="d-flex mb-2">
+                <textarea className="form-control" rows="3"></textarea>
+                <button
+                  type="submit"
+                  class="ml-2 btn btn-primary text-white border-0 px-4"
+                  style={{ boxShadow: "none" }}
+                >
+                  Send
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-6 d-flex align-items-center">
+              You dont have any conversations
+            </div>
+          )}
 
           <div
             className="col-3"

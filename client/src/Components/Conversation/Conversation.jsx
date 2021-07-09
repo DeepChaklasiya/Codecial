@@ -1,23 +1,35 @@
 import React from "react";
 import { AuthContext } from "../../Context/AuthContext";
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import "./conversation.css";
+import axios from "axios";
 
-export default function Conversation() {
+export default function Conversation({ conversation, currentUser }) {
+  const [user, setUser] = useState(null);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const friendId = conversation.members.find(
+      (member) => member != currentUser._id
+    );
+
+    const getFriend = async () => {
+      try {
+        const res = await axios.get("users?userId=" + friendId);
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getFriend();
+  }, [conversation, currentUser]);
+
   return (
-    <div
-      className="ml-2 mt-2 mr-2 d-flex align-items-center hoverName"
-      style={{
-        height: "40px",
-        width: "100%",
-        cursor: "pointer",
-      }}
-    >
+    <div>
       <img
         src={
-          user.profilePicture
+          user && user.profilePicture
             ? PF + user.profilePicture
             : PF + "noUserImage.png"
         }
@@ -25,7 +37,7 @@ export default function Conversation() {
         style={{ height: "32px", width: "32px" }}
         className="rounded-circle ml-2"
       ></img>
-      <span className="ml-2">Dummy Names</span>
+      <span className="ml-2">{user?.username}</span>
     </div>
   );
 }
