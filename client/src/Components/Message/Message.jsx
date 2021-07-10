@@ -20,13 +20,13 @@ export default function Message({ message, own }) {
           }
           style={{ borderRadius: "20px", maxWidth: "400px" }}
         >
-          {message}
+          {message.text}
           <div
             className={
               own ? "float-right mr-2 blackText" : "float-right mr-2 whiteText"
             }
           >
-            <span style={{ fontSize: "12px" }}>
+            <span style={{ fontSize: "10px", paddingLeft: "15px" }}>
               {format(message.createdAt)}
             </span>
           </div>

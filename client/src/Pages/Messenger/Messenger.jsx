@@ -6,13 +6,15 @@ import Message from "../../Components/Message/Message";
 import "./messanger.css";
 import Online from "../../Components/Online/Online";
 import { AuthContext } from "../../Context/AuthContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [newMessages, setNewMessages] = useState([]);
+  const scrollref = useRef();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -41,15 +43,35 @@ export default function Messenger() {
             createdAt: data.createdAt,
           };
         });
-        console.log("res.data", res.data);
         setMessages(temp);
-        console.log(temp);
       } catch (err) {
         console.log(err);
       }
     };
     getMessages();
   }, [currentChat]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const message = {
+      sender: user._id,
+      text: newMessages,
+      conversationId: currentChat._id,
+    };
+
+    try {
+      const res = await axios.post("/messages", message);
+      setMessages([...messages, res.data]);
+      setNewMessages("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    scrollref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <>
@@ -106,14 +128,14 @@ export default function Messenger() {
               }}
             >
               <div
-                className="d-flex flex-column overflow-scroll"
+                className="overflow-scroll"
                 style={{
                   height: "87%",
                   overflow: "scroll",
                 }}
               >
                 {messages.map((m) => (
-                  <div>
+                  <div ref={scrollref} className="d-flex flex-column">
                     <Message
                       key={m._id}
                       message={m}
@@ -123,11 +145,17 @@ export default function Messenger() {
                 ))}
               </div>
               <div className="d-flex mb-2">
-                <textarea className="form-control" rows="3"></textarea>
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  onChange={(e) => setNewMessages(e.target.value)}
+                  value={newMessages}
+                ></textarea>
                 <button
                   type="submit"
                   class="ml-2 btn btn-primary text-white border-0 px-4"
                   style={{ boxShadow: "none" }}
+                  onClick={handleSubmit}
                 >
                   Send
                 </button>
