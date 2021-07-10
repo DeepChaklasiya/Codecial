@@ -8,14 +8,27 @@ import Online from "../../Components/Online/Online";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
+  // const [socket, setSocket] = useState(null);
+
   const scrollref = useRef();
   const { user } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   setSocket(io("ws://localhost:8000"));
+  // }, []);
+
+  // useEffect(() => {
+  //   socket?.on("welcome", (message) => {
+  //     console.log(message);
+  //   });
+  // }, [socket]);
 
   useEffect(() => {
     const getConversation = async () => {
@@ -52,7 +65,7 @@ export default function Messenger() {
   }, [currentChat]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const message = {
       sender: user._id,
