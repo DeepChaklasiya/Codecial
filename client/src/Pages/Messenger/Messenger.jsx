@@ -16,6 +16,7 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
   const [arrivalMessages, setArrivalMessages] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   const socket = useRef();
 
@@ -42,11 +43,11 @@ export default function Messenger() {
   useEffect(() => {
     socket.current.emit("addUser", user._id);
     socket.current.on("getUsers", (users) => {
-      console.log(users);
+      setOnlineUsers(
+        user.following.filter((f) => users.some((u) => u.userId === f))
+      );
     });
   }, [socket]);
-
-  console.log(socket);
 
   useEffect(() => {
     const getConversation = async () => {
@@ -216,19 +217,11 @@ export default function Messenger() {
               <div className="py-2" style={{ borderBottom: "1px solid gray" }}>
                 <span className="font-weight-bold">Online Friends</span>
               </div>
-              <ul className="list-group">
-                {/* {Users.map((user) => ( */}
-                <Online
-                // key={user._id} user={user}
-                />
-                {/* ))} */}
-                <Online />
-                <Online />
-
-                <Online />
-                <Online />
-                <Online />
-              </ul>
+              <Online
+                onlineUsers={onlineUsers}
+                currentId={user._id}
+                setCurrentChat={setCurrentChat}
+              />
             </div>
           </div>
         </div>
