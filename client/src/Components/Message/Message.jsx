@@ -2,14 +2,21 @@ import React from "react";
 import "./message.css";
 import { format } from "timeago.js";
 
-export default function Message({ message, own }) {
+export default function Message({ rProfile, sProfile, message, own }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
   return (
     <div className={own ? "ownClass" : ""}>
       <div className="mx-1 my-2 d-flex">
         <img
-          src={PF + "noUserImage.png"}
+          src={
+            own
+              ? sProfile
+                ? PF + sProfile
+                : PF + "noUserImage.png"
+              : rProfile
+              ? PF + rProfile
+              : PF + "noUserImage.png"
+          }
           alt=""
           style={{ height: "28px", width: "28px" }}
           className="rounded-circle"

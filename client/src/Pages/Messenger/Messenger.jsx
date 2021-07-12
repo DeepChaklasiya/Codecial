@@ -17,6 +17,7 @@ export default function Messenger() {
   const [newMessages, setNewMessages] = useState([]);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [receiverProfile, setReceiverProfile] = useState(undefined);
 
   const socket = useRef();
 
@@ -37,7 +38,7 @@ export default function Messenger() {
   useEffect(() => {
     arrivalMessages &&
       currentChat?.members.includes(arrivalMessages.sender) &&
-      setMessages((prev) => [...prev, arrivalMessages.text]);
+      setMessages((prev) => [...prev, arrivalMessages]);
   }, [arrivalMessages, currentChat]);
 
   useEffect(() => {
@@ -83,8 +84,24 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
+  const handleFriendClick = async (c) => {
+    setCurrentChat(c);
+    console.log("Id", currentChat);
+    const receiverId = currentChat?.members.find(
+      (member) => member !== user._id
+    );
+    console.log("Id", receiverId);
+    try {
+      const res = await axios.get(`/users?userId=${receiverId}`);
+      setReceiverProfile(res.data.profilePicture);
+    } catch (err) {
+      console.log("Messenger File Error", err);
+    }
+    console.log("picture", user.profilePicture, receiverProfile);
+  };
+
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     const message = {
       sender: user._id,
@@ -92,7 +109,7 @@ export default function Messenger() {
       conversationId: currentChat._id,
     };
 
-    const receiverId = currentChat.members.find(
+    const receiverId = currentChat?.members.find(
       (member) => member !== user._id
     );
 
@@ -147,7 +164,7 @@ export default function Messenger() {
             <div className="row">
               {conversations.map((c) => (
                 <div
-                  onClick={() => setCurrentChat(c)}
+                  onClick={() => handleFriendClick(c)}
                   className="ml-2 mt-2 mr-2 d-flex align-items-center hoverName"
                   style={{
                     height: "40px",
@@ -179,6 +196,8 @@ export default function Messenger() {
                 {messages.map((m) => (
                   <div ref={scrollref} className="d-flex flex-column">
                     <Message
+                      rProfile={receiverProfile}
+                      sProfile={user.profilePicture}
                       key={m._id}
                       message={m}
                       own={m.sender === user._id}
@@ -205,7 +224,7 @@ export default function Messenger() {
             </div>
           ) : (
             <div className="col-6 d-flex align-items-center">
-              You dont have any conversations
+              Click on any Friend to start conversation...
             </div>
           )}
 
@@ -213,7 +232,7 @@ export default function Messenger() {
             className="col-3"
             style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
           >
-            <div className="my-1 ml-3">
+            <div className="my-1">
               <div className="py-2" style={{ borderBottom: "1px solid gray" }}>
                 <span className="font-weight-bold">Online Friends</span>
               </div>

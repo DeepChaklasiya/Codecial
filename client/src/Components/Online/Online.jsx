@@ -1,3 +1,4 @@
+import { CompassCalibrationOutlined } from "@material-ui/icons";
 import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -28,22 +29,43 @@ export default function Online({
       const res = await axios.get(
         `/conversations/find/${currentId}/${user._id}`
       );
+      console.log(res.data);
       setCurrentChat(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log(onlineFriends.length);
-
   return (
     <ul className="list-group">
-      {onlineFriends.map((o) => {
-        {
-          console.log(o);
-        }
-        <li className="d-flex align-items-center my-2">hello madarchod</li>;
-      })}
+      {onlineFriends.map((o) => (
+        <li
+          className="d-flex align-items-center my-2 pl-2 hoverDiv"
+          onClick={() => handleClick(o)}
+          style={{
+            height: "40px",
+            width: "100%",
+            cursor: "pointer",
+            borderRadius: "10px",
+          }}
+        >
+          <div className="relativePosition">
+            <img
+              src={
+                o.profilePicture
+                  ? PF + o.profilePicture
+                  : PF + "noUserImage.png"
+              }
+              alt="empty"
+              style={{ height: "30px", width: "30px" }}
+              className="rounded-circle"
+            ></img>
+            <span className="rightbarOnline"></span>
+          </div>
+          <div style={{ width: "15px" }}></div>
+          <span>{o.username}</span>
+        </li>
+      ))}
     </ul>
   );
 }
