@@ -11,6 +11,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 export default function Messenger() {
+  // States...
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -20,7 +21,6 @@ export default function Messenger() {
   const [receiverProfile, setReceiverProfile] = useState(undefined);
 
   const socket = useRef();
-
   const scrollref = useRef();
   const { user } = useContext(AuthContext);
 
@@ -84,21 +84,20 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
-  const handleFriendClick = async (c) => {
-    setCurrentChat(c);
-    console.log("Id", currentChat);
-    const receiverId = currentChat?.members.find(
-      (member) => member !== user._id
-    );
-    console.log("Id", receiverId);
-    try {
-      const res = await axios.get(`/users?userId=${receiverId}`);
-      setReceiverProfile(res.data.profilePicture);
-    } catch (err) {
-      console.log("Messenger File Error", err);
-    }
-    console.log("picture", user.profilePicture, receiverProfile);
-  };
+  useEffect(() => {
+    const getProfilePicture = async () => {
+      const receiverId = currentChat?.members.find(
+        (member) => member !== user._id
+      );
+      try {
+        const res = await axios.get(`/users?userId=${receiverId}`);
+        setReceiverProfile(res.data.profilePicture);
+      } catch (err) {
+        console.log("Messenger File Error", err);
+      }
+    };
+    getProfilePicture();
+  }, [currentChat]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,7 +163,7 @@ export default function Messenger() {
             <div className="row">
               {conversations.map((c) => (
                 <div
-                  onClick={() => handleFriendClick(c)}
+                  onClick={() => setCurrentChat(c)}
                   className="ml-2 mt-2 mr-2 d-flex align-items-center hoverName"
                   style={{
                     height: "40px",
@@ -205,21 +204,25 @@ export default function Messenger() {
                   </div>
                 ))}
               </div>
-              <div className="d-flex mb-2">
-                <textarea
-                  className="form-control"
-                  rows="3"
-                  onChange={(e) => setNewMessages(e.target.value)}
-                  value={newMessages}
-                ></textarea>
-                <button
-                  type="submit"
-                  class="ml-2 btn btn-primary text-white border-0 px-4"
-                  style={{ boxShadow: "none" }}
-                  onClick={handleSubmit}
-                >
-                  Send
-                </button>
+              <div className="d-flex mb-2 align-items-center">
+                <div style={{ width: "600px" }}>
+                  <textarea
+                    className="form-control"
+                    rows="3"
+                    onChange={(e) => setNewMessages(e.target.value)}
+                    value={newMessages}
+                  ></textarea>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    class="ml-2 btn btn-primary text-white border-0 px-4"
+                    style={{ boxShadow: "none" }}
+                    onClick={handleSubmit}
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

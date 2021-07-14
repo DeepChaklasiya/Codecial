@@ -11,10 +11,20 @@ import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext } from "react";
+import axios from "axios";
 
 export default function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
+
+  const handleChange = async (text) => {
+    try {
+      const res = await axios.get(`/users/allUsers?pattern=${text}`);
+      console.log(res.data);
+    } catch (err) {
+      console.log("Topbar File Error");
+    }
+  };
   return (
     <>
       <div className="container-fluid">
@@ -40,13 +50,22 @@ export default function Topbar() {
             <div className="d-flex align-items-center">
               <Search style={{ fontSize: "25px" }} />
               <input
-                placeholder=" Search for friends, posts or Videos"
+                placeholder=" Search for friends"
                 className="form-control border-0"
+                onChange={(e) => handleChange(e.target.value)}
               />
             </div>
           </div>
 
-          <div className="col-2 pt-3 text-white">HomePage Timeline</div>
+          <div className="col-2 pt-3 text-white">
+            <Link
+              className="text-white"
+              to="/"
+              style={{ textDecoration: "none" }}
+            >
+              Timeline
+            </Link>
+          </div>
 
           <div className="col-2 d-flex">
             <div

@@ -142,4 +142,17 @@ router.get("/friends/:userId", async (req, res) => {
   }
 });
 
+router.get("/allUsers", async (req, res) => {
+  try {
+    const pattern = req.query.pattern;
+    const allUsers = await User.find();
+    const users = allUsers.filter((user) => {
+      return user.includes(pattern);
+    });
+    res.status(200).json(user);
+  } catch (err) {
+    return res.status(505).json(err);
+  }
+});
+
 module.exports = router;

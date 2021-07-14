@@ -40,7 +40,7 @@ export default function Online({
     <ul className="list-group">
       {onlineFriends.map((o) => (
         <li
-          className="d-flex align-items-center my-2 pl-2 hoverDiv"
+          className="d-flex align-items-center my-2 pl-2 hoverName"
           onClick={() => handleClick(o)}
           style={{
             height: "40px",

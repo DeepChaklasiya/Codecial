@@ -3,12 +3,17 @@ import { AuthContext } from "../../Context/AuthContext";
 import { useState, useContext, useRef } from "react";
 import { Cancel } from "@material-ui/icons";
 import axios from "axios";
+import { Picker } from "emoji-picker-element";
+import "./share.css";
 
 export default function Share() {
   const [file, setFile] = useState(null);
+  const [emoji, setEmoji] = useState(null);
+
   const desc = useRef();
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPost = { userId: user._id, desc: desc.current.value };
@@ -33,10 +38,35 @@ export default function Share() {
     }
   };
 
+  const handleFeelings = () => {
+    const container = document.getElementById("removeMargin");
+    container.classList.remove("mb-5");
+
+    const emjContainer = document.getElementById("emjDiv");
+    emjContainer.style.setProperty("display", "block", "important");
+    emjContainer.classList.add("mb-5");
+    // emjContainer.style.marginLeft = "330px";
+    emjContainer.style.setProperty("margin-left", "330px", "important");
+  };
+
+  const handleremove = () => {
+    const container = document.getElementById("removeMargin");
+    container.classList.add("mb-5");
+
+    const emjContainer = document.getElementById("emjDiv");
+    emjContainer.style.display = "none";
+  };
+
+  const onEmojiClick = (event, emojiObject) => {
+    setEmoji(emojiObject);
+    console.log("Emoji", emoji);
+  };
+
   return (
     <>
       <div
         className="card mt-3 mb-5"
+        id="removeMargin"
         style={{
           width: "100%",
           boxShadow: "0px 0px 16px -8px rgb(0, 0, 0, 0.6)",
@@ -109,7 +139,10 @@ export default function Share() {
                 <Room htmlColor="green" />
                 <span className="pl-2">Location</span>
               </div>
-              <div className="d-flex align-items-center">
+              <div
+                className="d-flex align-items-center"
+                onClick={handleFeelings}
+              >
                 <EmojiEmotions htmlColor="goldenrod" />
                 <span className="pl-2">Feelings</span>
               </div>
@@ -124,6 +157,12 @@ export default function Share() {
             </div>
           </div>
         </form>
+      </div>
+      <div id="emjDiv">
+        <div className="d-flex">
+          {/* <Picker onEmojiClick={onEmojiClick} class="light"></Picker> */}
+          <Cancel onClick={handleremove} />
+        </div>
       </div>
     </>
   );

@@ -23,6 +23,10 @@
   border: 2px solid white;
 }
 
-.hoverDiv:hover {
-  background-color: rgb(228, 217, 217);
+.hoverName {
+  border-radius: 10px;
+}
+
+.hoverName:hover {
+  background-color: #e0e0e0;
 }

@@ -13,62 +13,194 @@ import {
   School,
 } from "@material-ui/icons";
 
-import { Users } from "../../dummyData";
+import { Link } from "react-router-dom";
+
 import CloseFriend from "../CloseFriend/CloseFriend";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Sidebar() {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { user } = useContext(AuthContext);
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    const getFriends = async () => {
+      const res = await axios.get(`/users/friends/${user._id}`);
+      setFriends(res.data);
+    };
+    getFriends();
+  }, []);
+
   return (
     <>
       <div style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}>
         <div>
           <ul className="list-group">
-            <li className="d-flex align-items-center my-2 ml-3">
-              <RssFeed />
-              <div style={{ width: "15px" }}></div>
-              <span>Feed</span>
+            <li
+              className="ml-2 mt-1 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <RssFeed />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Feed
+                  </Link>
+                </span>
+              </div>
             </li>
 
-            <li className="d-flex align-items-center my-2 ml-3">
-              <Chat />
-              <div style={{ width: "15px" }}></div>
-              <span>Chats</span>
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <Chat />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Chats
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <PlayCircleFilledOutlined />
-              <div style={{ width: "15px" }}></div>
-              <span>Videos</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <PlayCircleFilledOutlined />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Videos
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <Group />
-              <div style={{ width: "15px" }}></div>
-              <span>Groups</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <Group />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Groups
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <Bookmarks />
-              <div style={{ width: "15px" }}></div>
-              <span>Bookmarks</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <Bookmarks />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Bookmarks
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <HelpOutline />
-              <div style={{ width: "15px" }}></div>
-              <span>Questions</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <HelpOutline />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Questions
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <WorkOutline />
-              <div style={{ width: "15px" }}></div>
-              <span>Jobs</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <WorkOutline />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Jobs
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-2 ml-3">
-              <Event />
-              <div style={{ width: "15px" }}></div>
-              <span>Events</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <Event />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Events
+                  </Link>
+                </span>
+              </div>
             </li>
-            <li className="d-flex align-items-center my-1 ml-3">
-              <School />
-              <div style={{ width: "15px" }}></div>
-              <span>Courses</span>
+
+            <li
+              className="ml-2 mr-4 hoverDiv"
+              style={{ borderRadius: "10px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center my-2 ml-3">
+                <School />
+                <div style={{ width: "15px" }}></div>
+                <span>
+                  <Link
+                    to="/messenger"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    Courses
+                  </Link>
+                </span>
+              </div>
             </li>
           </ul>
+
           <div
             className="my-2 ml-3 bg-primary"
             style={{ width: "40%", borderRadius: "20px" }}
@@ -84,8 +216,8 @@ export default function Sidebar() {
           <hr style={{ margin: "20px 0" }} />
 
           <ul className="list-group overflow-scroll">
-            {Users.map((user) => (
-              <CloseFriend key={user.id} user={user} />
+            {friends.map((user) => (
+              <CloseFriend key={user._id} user={user} />
             ))}
           </ul>
         </div>
