@@ -26,10 +26,13 @@ export default function Sidebar() {
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
+    console.log(`/users/friends/${user._id}`);
     const getFriends = async () => {
       const res = await axios.get(`/users/friends/${user._id}`);
       setFriends(res.data);
+      console.log(res.data);
     };
+
     getFriends();
   }, []);
 

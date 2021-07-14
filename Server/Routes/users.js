@@ -126,6 +126,7 @@ router.get("/friends/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     const user = await User.findById(userId);
+    console.log(user);
     const Friends = await Promise.all(
       user.following.map((friendId) => {
         return User.findById(friendId);
@@ -136,6 +137,7 @@ router.get("/friends/:userId", async (req, res) => {
       const { _id, username, profilePicture } = Friend;
       friendList.push({ _id, username, profilePicture });
     });
+    console.log(friendList);
     res.status(200).json(friendList);
   } catch (err) {
     return res.status(505).json(err);
@@ -145,11 +147,12 @@ router.get("/friends/:userId", async (req, res) => {
 router.get("/allUsers", async (req, res) => {
   try {
     const pattern = req.query.pattern;
+    console.log("upper");
     const allUsers = await User.find();
     const users = allUsers.filter((user) => {
-      return user.includes(pattern);
+      return user.username.includes(pattern);
     });
-    res.status(200).json(user);
+    res.status(200).json(users);
   } catch (err) {
     return res.status(505).json(err);
   }

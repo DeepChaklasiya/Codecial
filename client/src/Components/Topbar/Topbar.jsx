@@ -10,21 +10,29 @@ import {
 import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
+  const [searchUser, setSearchUser] = useState([]);
+  const [focused, setFocused] = useState(false);
 
   const handleChange = async (text) => {
     try {
       const res = await axios.get(`/users/allUsers?pattern=${text}`);
-      console.log(res.data);
+      setSearchUser(res.data);
+      console.log("changed");
     } catch (err) {
       console.log("Topbar File Error");
     }
   };
+
+  useEffect(() => {
+    console.log("rendering", focused);
+  }, [focused]);
+
   return (
     <>
       <div className="container-fluid">
@@ -53,7 +61,23 @@ export default function Topbar() {
                 placeholder=" Search for friends"
                 className="form-control border-0"
                 onChange={(e) => handleChange(e.target.value)}
+                onFocusIn={() => setFocused(true)}
+                onFocusOut={() => setFocused(false)}
               />
+            </div>
+            <div
+              className="bg-danger"
+              style={{
+                width: "400px",
+                zIndex: "1",
+                position: "absolute",
+                left: "40px",
+              }}
+            >
+              <ul className="list-group" style={{ listStyle: "none" }}>
+                <li className="bg-warning m-2">first</li>
+                <li>first</li>
+              </ul>
             </div>
           </div>
 
