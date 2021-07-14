@@ -6,9 +6,11 @@ router.get("/", async (req, res) => {
   const username = req.query.username;
   const userId = req.query.userId;
   try {
+    console.log("coming", userId);
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ username: username });
+    console.log("user", user);
     const { password, updatedAt, ...temp } = user._doc;
     res.status(200).json(temp);
   } catch (err) {

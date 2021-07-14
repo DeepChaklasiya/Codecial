@@ -23,7 +23,6 @@ export default function Topbar() {
     try {
       const res = await axios.get(`/users/allUsers?pattern=${text}`);
       setSearchUser(res.data);
-      console.log("changed");
     } catch (err) {
       console.log("Topbar File Error");
     }
@@ -61,8 +60,8 @@ export default function Topbar() {
                 placeholder=" Search for friends"
                 className="form-control border-0"
                 onChange={(e) => handleChange(e.target.value)}
-                onFocusIn={() => setFocused(true)}
-                onFocusOut={() => setFocused(false)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
               />
             </div>
             <div

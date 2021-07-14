@@ -2,9 +2,30 @@ import { Users } from "../../dummyData";
 import Online from "../Online/Online";
 import ProfileRightbar from "../ProfileRightbar/ProfileRightbar";
 import "./rightbar.css";
+import { useContext, useState, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
 
-export default function Rightbar({ user }) {
+export default function Rightbar({}) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { user } = useContext(AuthContext);
+
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const socket = useRef();
+  const { username } = useParams();
+  useEffect(() => {
+    socket.current = io("ws://localhost:8000");
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(
+        user.following.filter((f) => users.some((u) => u.userId === f))
+      );
+    });
+  }, [socket]);
 
   const HomeRightbar = () => {
     return (
@@ -38,8 +59,8 @@ export default function Rightbar({ user }) {
           <div className="my-1 ml-3">
             <span className="font-weight-bold">Online Friends</span>
             <ul className="list-group">
-              {Users.map((user) => (
-                <Online key={user._id} user={user} />
+              {onlineUsers.map((user) => (
+                <Online key={user._id} userId={user} />
               ))}
             </ul>
           </div>
@@ -50,7 +71,11 @@ export default function Rightbar({ user }) {
 
   return (
     <>
-      {user ? <ProfileRightbar key={user._id} user={user} /> : <HomeRightbar />}
+      {username ? (
+        <ProfileRightbar key={user._id} user={user} />
+      ) : (
+        <HomeRightbar />
+      )}
     </>
   );
 }

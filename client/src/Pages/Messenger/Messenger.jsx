@@ -4,7 +4,7 @@ import { Search } from "@material-ui/icons";
 import Conversation from "../../Components/Conversation/Conversation";
 import Message from "../../Components/Message/Message";
 import "./messanger.css";
-import Online from "../../Components/Online/Online";
+import ChatOnline from "../../Components/ChatOnline/ChatOnline";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -239,7 +239,7 @@ export default function Messenger() {
               <div className="py-2" style={{ borderBottom: "1px solid gray" }}>
                 <span className="font-weight-bold">Online Friends</span>
               </div>
-              <Online
+              <ChatOnline
                 onlineUsers={onlineUsers}
                 currentId={user._id}
                 setCurrentChat={setCurrentChat}

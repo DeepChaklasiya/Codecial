@@ -1,71 +1,51 @@
-import { CompassCalibrationOutlined } from "@material-ui/icons";
 import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 
-export default function Online({
-  user,
-  onlineUsers,
-  currentId,
-  setCurrentChat,
-}) {
+export default function Online({ userId }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [friends, setFriends] = useState([]);
-  const [onlineFriends, setOnlineFriends] = useState([]);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    const getFriends = async () => {
-      const res = await axios.get("/users/friends/" + currentId);
-      setFriends(res.data);
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`/users?userId=${userId}`);
+        setUser(res.data);
+        console.log("checking reponse", res.data);
+      } catch (err) {
+        console.log("Online File Error", err);
+      }
     };
-    getFriends();
-  }, [currentId]);
-
-  useEffect(() => {
-    setOnlineFriends(friends.filter((frnd) => onlineUsers.includes(frnd._id)));
-  }, [friends, onlineUsers]);
-
-  const handleClick = async (user) => {
-    try {
-      const res = await axios.get(
-        `/conversations/find/${currentId}/${user._id}`
-      );
-      console.log(res.data);
-      setCurrentChat(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    getUser();
+    console.log("online file", user);
+  }, [userId]);
 
   return (
     <ul className="list-group">
-      {onlineFriends.map((o) => (
-        <li
-          className="d-flex align-items-center my-2 pl-2 hoverName"
-          onClick={() => handleClick(o)}
-          style={{
-            height: "40px",
-            width: "100%",
-            cursor: "pointer",
-            borderRadius: "10px",
-          }}
-        >
-          <div className="relativePosition">
-            <img
-              src={
-                o.profilePicture
-                  ? PF + o.profilePicture
-                  : PF + "noUserImage.png"
-              }
-              alt="empty"
-              style={{ height: "30px", width: "30px" }}
-              className="rounded-circle"
-            ></img>
-            <span className="rightbarOnline"></span>
-          </div>
-          <div style={{ width: "15px" }}></div>
-          <span>{o.username}</span>
-        </li>
-      ))}
+      <li
+        className="d-flex align-items-center my-2 pl-2"
+        style={{
+          height: "40px",
+          width: "100%",
+          borderRadius: "10px",
+        }}
+      >
+        <div className="relativePosition">
+          <img
+            src={
+              user?.profilePicture
+                ? PF + user.profilePicture
+                : PF + "noUserImage.png"
+            }
+            alt="empty"
+            style={{ height: "30px", width: "30px" }}
+            className="rounded-circle"
+          ></img>
+          <span className="rightbarOnline"></span>
+        </div>
+        <div style={{ width: "15px" }}></div>
+        <span>{user?.username}</span>
+      </li>
     </ul>
   );
 }
