@@ -9,28 +9,38 @@ import {
 } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  let history = useHistory();
   const { user } = useContext(AuthContext);
   const [searchUser, setSearchUser] = useState([]);
   const [focused, setFocused] = useState(false);
-
-  const handleChange = async (text) => {
-    try {
-      const res = await axios.get(`/users/allUsers?pattern=${text}`);
-      setSearchUser(res.data);
-    } catch (err) {
-      console.log("Topbar File Error");
-    }
-  };
+  const [text, setText] = useState("");
 
   useEffect(() => {
-    console.log("rendering", focused);
-  }, [focused]);
+    const getUser = async () => {
+      try {
+        if (text != "") {
+          const res = await axios.get(`/users/allUsers?pattern=${text}`);
+          setSearchUser(res.data);
+        } else {
+          setSearchUser([]);
+        }
+      } catch (err) {
+        console.log("Topbar File Error");
+      }
+    };
+    getUser();
+  }, [text]);
+
+  const handleClick = () => {
+    console.log("clicked");
+  };
 
   return (
     <>
@@ -59,24 +69,63 @@ export default function Topbar() {
               <input
                 placeholder=" Search for friends"
                 className="form-control border-0"
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => setText(e.target.value)}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
               />
             </div>
             <div
-              className="bg-danger"
               style={{
                 width: "400px",
                 zIndex: "1",
                 position: "absolute",
                 left: "40px",
+                backgroundColor: "white",
+                // boxShadow: "0px 0px 1px black inset",
               }}
             >
-              <ul className="list-group" style={{ listStyle: "none" }}>
-                <li className="bg-warning m-2">first</li>
-                <li>first</li>
-              </ul>
+              {focused ? (
+                searchUser.length > 0 ? (
+                  <ul className="list-group " style={{ listStyle: "none" }}>
+                    {searchUser.map((user) => (
+                      <li
+                        key={user._id}
+                        className="mt-2 mx-2  hoverName"
+                        style={{ cursor: "pointer" }}
+                      >
+                        {/* <Link
+                          to={`/profile/${user?.username}`}
+                          style={{
+                            textDecoration: "none",
+                            color: "black",
+                          }}
+                        > */}
+                        <div className="d-flex align-items-center bg-danger">
+                          <img
+                            onClick={handleClick}
+                            src={
+                              user && user.profilePicture
+                                ? PF + user.profilePicture
+                                : PF + "noUserImage.png"
+                            }
+                            alt=""
+                            style={{ height: "32px", width: "32px" }}
+                            className="rounded-circle ml-2 my-2"
+                          ></img>
+                          <span className="ml-2">{user.username}</span>
+                          {/* </Link> */}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ul className="list-group " style={{ listStyle: "none" }}>
+                    <li className="m-2">No user Found</li>
+                  </ul>
+                )
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
 

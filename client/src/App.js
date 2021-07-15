@@ -17,10 +17,6 @@ function App() {
   const { user } = useContext(AuthContext);
   return (
     <>
-      {/* <Home /> */}
-      {/* <Profile /> */}
-      {/* <Register /> */}
-
       <Router>
         <Switch>
           <Route exact path="/">

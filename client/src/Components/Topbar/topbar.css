@@ -1,7 +1,15 @@
-.height150{
-    height : 55px;
+.height150 {
+  height: 55px;
 }
 
 .form-control:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.hoverName {
+  border-radius: 10px;
+}
+
+.hoverName:hover {
+  background-color: #e0e0e0;
 }

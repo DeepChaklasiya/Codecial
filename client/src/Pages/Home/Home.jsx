@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <div>
       <Topbar />
-      {console.log("in the home page")}
       <div className="container-fuild">
         <div className="row">
           <div className="col-3">
