@@ -112,6 +112,8 @@ export default function ProfileRightbar({ user }) {
                         : PF + "noUserImage.png"
                     }
                     alt=""
+                    width="100px"
+                    height="100px"
                     className="card-img"
                   ></img>
                   <div

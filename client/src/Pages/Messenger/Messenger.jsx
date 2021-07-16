@@ -33,7 +33,7 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     arrivalMessages &&

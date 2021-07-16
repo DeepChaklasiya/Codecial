@@ -6,6 +6,7 @@ import {
   Chat,
   Notifications,
   ChatBubbleOutline,
+  WbIncandescentOutlined,
 } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import { Cancel, ExitToApp } from "@material-ui/icons";
@@ -14,7 +15,7 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 export default function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   let history = useHistory();
@@ -51,8 +52,7 @@ export default function Topbar() {
   const onLogout = () => {
     localStorage.removeItem("user");
     localStorage.clear();
-    history.push("/login");
-    console.log("app user", user);
+    window.location.reload();
   };
 
   return (
@@ -103,7 +103,6 @@ export default function Topbar() {
                 position: "absolute",
                 left: "40px",
                 backgroundColor: "white",
-                // boxShadow: "0px 0px 1px black inset",
               }}
             >
               {focused ? (
@@ -189,34 +188,47 @@ export default function Topbar() {
                   className="rounded-circle"
                 ></img>
               </Link> */}
+
               <a
-                className=""
+                className="text-white"
                 id="navbarDropdown"
                 role="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <img
-                  src={
-                    user && user.profilePicture
-                      ? PF + user.profilePicture
-                      : PF + "noUserImage.png"
-                  }
-                  alt=""
-                  style={{ height: "32px", width: "32px" }}
-                  className="rounded-circle"
-                ></img>
+                <div
+                  className="d-flex align-items-center justify-content-center hoverImg"
+                  style={{
+                    width: "60px",
+                    height: "40px",
+                    borderRadius: "15px",
+                  }}
+                >
+                  <img
+                    src={
+                      user && user.profilePicture
+                        ? PF + user.profilePicture
+                        : PF + "noUserImage.png"
+                    }
+                    alt=""
+                    style={{ height: "32px", width: "32px" }}
+                    className="rounded-circle"
+                  ></img>
+                  <ArrowDropDownIcon />
+                </div>
               </a>
               <div
-                className="dropdown-menu mt-4 dropdown-menu-right"
+                className="dropdown-menu mt-2 dropdown-menu-right"
                 aria-labelledby="navbarDropdown"
               >
-                <div>
+                <div className="text-center font-weight-bold">
                   <Link
-                    className="text-dark"
                     to={`/profile/${user?.username}`}
-                    style={{ textDecoration: "none" }}
+                    style={{
+                      textDecoration: "none",
+                      color: "rgb(28, 62, 218)",
+                    }}
                   >
                     View Profile
                   </Link>

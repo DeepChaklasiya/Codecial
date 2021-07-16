@@ -14,3 +14,7 @@
 .hoverName:hover {
   background-color: #d8d7d7;
 }
+
+.hoverImg:hover {
+  background-color: rgb(129, 179, 228);
+}

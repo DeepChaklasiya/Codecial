@@ -13,15 +13,42 @@ export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [user, setUser] = useState({});
+  const [file, setFile] = useState(null);
   const username = useParams().username;
+
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`);
-      setUser(res.data);
+      try {
+        const res = await axios.get(`/users?username=${username}`);
+        setUser(res.data);
+      } catch (err) {
+        console.log("Profile File Error");
+      }
     };
 
     fetchUser();
   }, [username]);
+
+  useEffect(() => {
+    const updateProfile = async () => {
+      console.log("profile picture", user);
+      try {
+        const updatedUser = {
+          ...user,
+          userId: user._id,
+          profilePicture: file.name,
+        };
+        console.log("updated user", updatedUser);
+        const res = await axios.put(`/users/${user._id}`, updatedUser);
+        localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        window.location.reload();
+      } catch (err) {
+        console.log("Profile File Error");
+      }
+    };
+    updateProfile();
+  }, [file]);
 
   return (
     <>
@@ -57,10 +84,23 @@ export default function Profile() {
                   ></img>
                 </div>
                 <div
-                  className="changeProfile d-flex align-items-center justify-content-center"
+                  className="changeProfile "
                   style={{ width: "50px", height: "50px" }}
                 >
-                  <CameraAlt />
+                  <label
+                    htmlFor="file"
+                    className="d-flex mt-2 align-items-center justify-content-center"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CameraAlt />
+                    <input
+                      className="d-none"
+                      id="file"
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      onChange={(e) => setFile(e.target.files[0])}
+                    ></input>
+                  </label>
                 </div>
               </div>
               <div style={{ height: "70px" }}></div>

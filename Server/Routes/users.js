@@ -6,11 +6,9 @@ router.get("/", async (req, res) => {
   const username = req.query.username;
   const userId = req.query.userId;
   try {
-    console.log("coming", userId);
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ username: username });
-    console.log("user", user);
     const { password, updatedAt, ...temp } = user._doc;
     res.status(200).json(temp);
   } catch (err) {
@@ -19,9 +17,8 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  // const user = await User.findOne({_id : req.params.id})
-  // const isAdmin = user.isAdmin;
-
+  console.log("body Id", req.body.userId);
+  console.log("param Id", req.params.id);
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {

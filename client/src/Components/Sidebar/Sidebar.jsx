@@ -61,18 +61,16 @@ export default function Sidebar() {
               className="ml-2 mr-4 hoverDiv"
               style={{ borderRadius: "10px", cursor: "pointer" }}
             >
-              <div className="d-flex align-items-center my-2 ml-3">
-                <Chat />
-                <div style={{ width: "15px" }}></div>
-                <span>
-                  <Link
-                    to="/messenger"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Chats
-                  </Link>
-                </span>
-              </div>
+              <Link
+                to="/messenger"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <div className="d-flex align-items-center my-2 ml-3">
+                  <Chat />
+                  <div style={{ width: "15px" }}></div>
+                  <span>Chats</span>
+                </div>
+              </Link>
             </li>
 
             <li
@@ -115,18 +113,16 @@ export default function Sidebar() {
               className="ml-2 mr-4 hoverDiv"
               style={{ borderRadius: "10px", cursor: "pointer" }}
             >
-              <div className="d-flex align-items-center my-2 ml-3">
-                <Bookmarks />
-                <div style={{ width: "15px" }}></div>
-                <span>
-                  <Link
-                    to="/messenger"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Bookmarks
-                  </Link>
-                </span>
-              </div>
+              <Link
+                to="/news"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <div className="d-flex align-items-center my-2 ml-3">
+                  <Bookmarks />
+                  <div style={{ width: "15px" }}></div>
+                  <span>News</span>
+                </div>
+              </Link>
             </li>
 
             <li
