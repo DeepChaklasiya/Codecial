@@ -13,3 +13,12 @@
   border-radius: 50%;
   border: 5px solid white;
 }
+
+.changeProfile {
+  position: absolute;
+  right: 42%;
+  border: 5px solid white;
+  border-radius: 50%;
+  background-color: rgb(216, 214, 214);
+  cursor: pointer;
+}

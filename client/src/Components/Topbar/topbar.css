@@ -8,8 +8,9 @@
 
 .hoverName {
   border-radius: 10px;
+  background-color: rgb(241, 238, 238);
 }
 
 .hoverName:hover {
-  background-color: #e0e0e0;
+  background-color: #d8d7d7;
 }

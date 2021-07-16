@@ -8,6 +8,7 @@ import {
   ChatBubbleOutline,
 } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
+import { Cancel, ExitToApp } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
@@ -26,10 +27,11 @@ export default function Topbar() {
     const getUser = async () => {
       try {
         if (text != "") {
+          const btn = document.querySelector("#btnclass");
+          btn.classList.remove("d-none");
+          setFocused(true);
           const res = await axios.get(`/users/allUsers?pattern=${text}`);
           setSearchUser(res.data);
-        } else {
-          setSearchUser([]);
         }
       } catch (err) {
         console.log("Topbar File Error");
@@ -38,8 +40,19 @@ export default function Topbar() {
     getUser();
   }, [text]);
 
-  const handleClick = () => {
-    console.log("clicked");
+  const removeText = () => {
+    const btn = document.querySelector("#btnclass");
+    setSearchUser([]);
+    setFocused(false);
+    setText("");
+    btn.classList.add("d-none");
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.clear();
+    history.push("/login");
+    console.log("app user", user);
   };
 
   return (
@@ -70,9 +83,18 @@ export default function Topbar() {
                 placeholder=" Search for friends"
                 className="form-control border-0"
                 onChange={(e) => setText(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
+                onFocus={(e) => setText(e.target.value)}
+                value={text}
               />
+              {text && (
+                <span
+                  className="border-0 bg-white"
+                  id="btnclass"
+                  onClick={removeText}
+                >
+                  <Cancel />
+                </span>
+              )}
             </div>
             <div
               style={{
@@ -93,28 +115,27 @@ export default function Topbar() {
                         className="mt-2 mx-2  hoverName"
                         style={{ cursor: "pointer" }}
                       >
-                        {/* <Link
+                        <Link
                           to={`/profile/${user?.username}`}
                           style={{
                             textDecoration: "none",
                             color: "black",
                           }}
-                        > */}
-                        <div className="d-flex align-items-center bg-danger">
-                          <img
-                            onClick={handleClick}
-                            src={
-                              user && user.profilePicture
-                                ? PF + user.profilePicture
-                                : PF + "noUserImage.png"
-                            }
-                            alt=""
-                            style={{ height: "32px", width: "32px" }}
-                            className="rounded-circle ml-2 my-2"
-                          ></img>
-                          <span className="ml-2">{user.username}</span>
-                          {/* </Link> */}
-                        </div>
+                        >
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={
+                                user && user.profilePicture
+                                  ? PF + user.profilePicture
+                                  : PF + "noUserImage.png"
+                              }
+                              alt=""
+                              style={{ height: "32px", width: "32px" }}
+                              className="rounded-circle ml-2 my-2"
+                            ></img>
+                            <span className="ml-2">{user.username}</span>
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -156,7 +177,7 @@ export default function Topbar() {
             </div>
             <div style={{ width: "10%" }}></div>
             <div className="pt-2">
-              <Link to={`/profile/${user?.username}`}>
+              {/* <Link to={`/profile/${user?.username}`}>
                 <img
                   src={
                     user && user.profilePicture
@@ -167,7 +188,50 @@ export default function Topbar() {
                   style={{ height: "32px", width: "32px" }}
                   className="rounded-circle"
                 ></img>
-              </Link>
+              </Link> */}
+              <a
+                className=""
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <img
+                  src={
+                    user && user.profilePicture
+                      ? PF + user.profilePicture
+                      : PF + "noUserImage.png"
+                  }
+                  alt=""
+                  style={{ height: "32px", width: "32px" }}
+                  className="rounded-circle"
+                ></img>
+              </a>
+              <div
+                className="dropdown-menu mt-4 dropdown-menu-right"
+                aria-labelledby="navbarDropdown"
+              >
+                <div>
+                  <Link
+                    className="text-dark"
+                    to={`/profile/${user?.username}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    View Profile
+                  </Link>
+                </div>
+                <div className="dropdown-divider"></div>
+                <div className="mx-1">
+                  <button
+                    className="form-control btn btn-danger d-flex align-items-center"
+                    onClick={onLogout}
+                  >
+                    <ExitToApp className="ml-2" />
+                    <span className="ml-2">Logout</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

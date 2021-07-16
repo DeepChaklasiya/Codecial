@@ -4,7 +4,7 @@ import Sidebar from "../../Components/Sidebar/Sidebar";
 import Feed from "../../Components/Feed/Feed";
 import Rightbar from "../../Components/Rightbar/Rightbar";
 
-export default function Home() {
+export default function Home({}) {
   return (
     <div>
       <Topbar />

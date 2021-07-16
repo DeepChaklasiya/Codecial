@@ -3,6 +3,7 @@ import { useRef, useContext } from "react";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../Context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const email = useRef();
@@ -16,8 +17,6 @@ export default function Login() {
       dispatch
     );
   };
-
-  console.log(user);
 
   return (
     <div
@@ -140,23 +139,25 @@ export default function Login() {
                 </a>
               </div>
 
-              <div
-                className="d-flex align-items-center mb-1 mx-auto"
-                style={{
-                  width: "70%",
-                  height: "45px",
-                  borderRadius: "5px",
-                  backgroundColor: "#42B728",
-                }}
-              >
-                <button
-                  type="text"
-                  className="btn btn-block text-white font-weight-bold"
-                  style={{ backgroundColor: "#42B728" }}
+              <Link to="/register" style={{ textDecoration: "none" }}>
+                <div
+                  className="d-flex align-items-center mb-1 mx-auto"
+                  style={{
+                    width: "70%",
+                    height: "45px",
+                    borderRadius: "5px",
+                    backgroundColor: "#42B728",
+                  }}
                 >
-                  Create a New Account
-                </button>
-              </div>
+                  <button
+                    type="text"
+                    className="btn btn-block text-white font-weight-bold"
+                    style={{ backgroundColor: "#42B728" }}
+                  >
+                    Create a New Account
+                  </button>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

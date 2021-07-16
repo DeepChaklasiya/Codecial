@@ -7,6 +7,7 @@ import "./profile.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { CameraAlt } from "@material-ui/icons";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -54,6 +55,12 @@ export default function Profile() {
                       borderRadius: "50%",
                     }}
                   ></img>
+                </div>
+                <div
+                  className="changeProfile d-flex align-items-center justify-content-center"
+                  style={{ width: "50px", height: "50px" }}
+                >
+                  <CameraAlt />
                 </div>
               </div>
               <div style={{ height: "70px" }}></div>

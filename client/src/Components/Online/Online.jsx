@@ -11,13 +11,11 @@ export default function Online({ userId }) {
       try {
         const res = await axios.get(`/users?userId=${userId}`);
         setUser(res.data);
-        console.log("checking reponse", res.data);
       } catch (err) {
         console.log("Online File Error", err);
       }
     };
     getUser();
-    console.log("online file", user);
   }, [userId]);
 
   return (

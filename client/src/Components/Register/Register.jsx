@@ -3,6 +3,7 @@ import React from "react";
 import { useRef } from "react";
 import { useHistory } from "react-router";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const username = useRef();
@@ -171,23 +172,25 @@ export default function Register() {
                 </div>
               </form>
 
-              <div
-                className="d-flex align-items-center mb-1 mx-auto"
-                style={{
-                  width: "70%",
-                  height: "45px",
-                  borderRadius: "5px",
-                  backgroundColor: "#42B728",
-                }}
-              >
-                <button
-                  type="text"
-                  className="btn btn-block text-white font-weight-bold"
-                  style={{ backgroundColor: "#42B728" }}
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <div
+                  className="d-flex align-items-center mb-1 mx-auto"
+                  style={{
+                    width: "70%",
+                    height: "45px",
+                    borderRadius: "5px",
+                    backgroundColor: "#42B728",
+                  }}
                 >
-                  Log In into Account
-                </button>
-              </div>
+                  <button
+                    type="text"
+                    className="btn btn-block text-white font-weight-bold"
+                    style={{ backgroundColor: "#42B728" }}
+                  >
+                    Log In into Account
+                  </button>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

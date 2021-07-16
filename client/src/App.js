@@ -10,13 +10,15 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./Context/AuthContext";
 
 function App() {
   const { user } = useContext(AuthContext);
+
   return (
     <>
+      {console.log("app component render")}
       <Router>
         <Switch>
           <Route exact path="/">
