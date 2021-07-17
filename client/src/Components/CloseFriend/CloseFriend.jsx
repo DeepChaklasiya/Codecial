@@ -13,7 +13,11 @@ export default function CloseFriend({ user }) {
       <li className="p-1 ml-2 hoverDiv" style={{ borderRadius: "10px" }}>
         <div className="ml-2 mr-2 d-flex align-items-center">
           <img
-            src={PF + user.profilePicture}
+            src={
+              user.profilePicture
+                ? PF + user.profilePicture
+                : PF + "noUserImage.png"
+            }
             alt=""
             style={{ height: "30px", width: "30px" }}
             className="rounded-circle"

@@ -7,22 +7,22 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 
-export default function Rightbar({}) {
+export default function Rightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const { user } = useContext(AuthContext);
+  const { user: currentUser } = useContext(AuthContext);
 
   const [onlineUsers, setOnlineUsers] = useState([]);
   const socket = useRef();
   const { username } = useParams();
   useEffect(() => {
     socket.current = io("ws://localhost:8000");
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
+    socket.current.emit("addUser", currentUser._id);
     socket.current.on("getUsers", (users) => {
       setOnlineUsers(
-        user.following.filter((f) => users.some((u) => u.userId === f))
+        currentUser.following.filter((f) => users.some((u) => u.userId === f))
       );
     });
   }, [socket]);

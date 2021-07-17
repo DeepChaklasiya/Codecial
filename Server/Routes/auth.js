@@ -20,6 +20,22 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/registerOauth", async (req, res) => {
+  const newUser = new User({
+    username: req.body.username,
+    email: req.body.email,
+    withGoogle: true,
+  });
+
+  try {
+    const user = await newUser.save();
+    res.status(200).json(user);
+  } catch (err) {
+    console.log("error is here");
+    // console.log(err);
+  }
+});
+
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -36,6 +52,18 @@ router.post("/login", async (req, res) => {
       res.status(400).json("Wrong Password");
     }
 
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.post("/loginOauth", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      res.status(400).json("User not found");
+    }
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);

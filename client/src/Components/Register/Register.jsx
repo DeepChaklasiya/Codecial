@@ -4,13 +4,14 @@ import { useRef } from "react";
 import { useHistory } from "react-router";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 
 export default function Register() {
   const username = useRef();
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
-  const histroy = useHistory();
+  const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,11 +26,28 @@ export default function Register() {
 
       try {
         const res = await axios.post("/auth/register", user);
-        console.log(histroy);
-        histroy.push("/login");
+        history.push("/login");
       } catch (err) {
         console.log("error", err);
       }
+    }
+  };
+
+  const responseGoogle = async (res) => {
+    const user = {
+      username: res.profileObj.name,
+      email: res.profileObj.email,
+      withGoogle: true,
+    };
+
+    try {
+      const res = await axios.post("/auth/registerOauth", user);
+      const loginUser = res.data;
+      console.log("loginuser", loginUser);
+      localStorage.setItem("user", JSON.stringify(loginUser));
+      window.location.reload();
+    } catch (err) {
+      console.log("error", err);
     }
   };
 
@@ -46,12 +64,12 @@ export default function Register() {
         style={{
           position: "absolute",
           width: "1000px",
-          height: "450px",
+          height: "500px",
           margin: "150px 200px",
           backgroundColor: "#E0E0E0",
         }}
       >
-        <div className="" style={{ width: "50%", height: "100%" }}>
+        <div style={{ width: "50%", height: "100%" }}>
           <div className="mx-5 " style={{ width: "400px", marginTop: "150px" }}>
             <h1 className="font-weight-bold" style={{ color: "#1775EE" }}>
               Codecial
@@ -65,7 +83,7 @@ export default function Register() {
           <div
             className="card"
             style={{
-              height: "410px",
+              height: "460px",
               width: "400px",
               marginTop: "25px",
               marginLeft: "50px",
@@ -169,6 +187,34 @@ export default function Register() {
                   >
                     Sign Up
                   </button>
+                </div>
+
+                <div
+                  className="d-flex align-items-center mb-3 "
+                  style={{
+                    width: "100%",
+                    height: "45px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {/* <button type="submit" style={{ backgroundColor: "#1775EE" }}>
+                    Sign Up
+                  </button> */}
+                  <GoogleLogin
+                    className="btn btn-block text-white font-weight-bold text-white bg-primary"
+                    clientId="953613880079-lmmbit4bgmi2luqg0gua35v08lss77u7.apps.googleusercontent.com"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                  >
+                    <span
+                      className="font-weight-bold"
+                      style={{ fontSize: "15px" }}
+                    >
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sign
+                      up with Google
+                    </span>
+                  </GoogleLogin>
                 </div>
               </form>
 

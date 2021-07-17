@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRef, useContext } from "react";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../Context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import GoogleLogin from "react-google-login";
+import axios from "axios";
 
 export default function Login() {
   const email = useRef();
   const password = useRef();
+  const [isError, setIsError] = useState(false);
 
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const handleSubmit = (event) => {
@@ -16,6 +19,32 @@ export default function Login() {
       { email: email.current.value, password: password.current.value },
       dispatch
     );
+  };
+
+  const responseGoogle = async (response) => {
+    try {
+      const res = await axios.get(
+        "/users?username=" + response.profileObj.name
+      );
+      const loginUser = res.data;
+      if (loginUser.withGoogle) {
+        try {
+          const res1 = await axios.post("/auth/loginOauth", {
+            email: loginUser.email,
+          });
+          const user = res1.data;
+          localStorage.setItem("user", JSON.stringify(user));
+          window.location.reload();
+        } catch (err) {
+          console.log("Login File Error1");
+        }
+      } else {
+        console.log("User not Found");
+      }
+    } catch (err) {
+      setIsError(true);
+      console.log(err);
+    }
   };
 
   return (
@@ -31,7 +60,7 @@ export default function Login() {
         style={{
           position: "absolute",
           width: "1000px",
-          height: "400px",
+          height: "450px",
           margin: "150px 200px",
           backgroundColor: "#E0E0E0",
         }}
@@ -47,12 +76,23 @@ export default function Login() {
           </div>
         </div>
         <div style={{ width: "50%", height: "100%" }}>
+          {isError && (
+            <div
+              className="text-center text-danger font-weight-bold"
+              style={{
+                width: "100%",
+                height: "25px",
+              }}
+            >
+              User not Found
+            </div>
+          )}
           <div
             className="card"
             style={{
-              height: "350px",
+              height: "400px",
               width: "400px",
-              marginTop: "25px",
+              marginTop: isError ? "0px" : "25px",
               marginLeft: "50px",
               borderRadius: "10px",
               border: "0px",
@@ -124,6 +164,31 @@ export default function Login() {
                       "Log In"
                     )}
                   </button>
+                </div>
+
+                <div
+                  className="d-flex align-items-center mb-3 "
+                  style={{
+                    width: "100%",
+                    height: "45px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <GoogleLogin
+                    className="btn btn-block text-white font-weight-bold text-white bg-primary"
+                    clientId="953613880079-lmmbit4bgmi2luqg0gua35v08lss77u7.apps.googleusercontent.com"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                  >
+                    <span
+                      className="font-weight-bold"
+                      style={{ fontSize: "15px" }}
+                    >
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log
+                      in with Google
+                    </span>
+                  </GoogleLogin>
                 </div>
               </form>
 

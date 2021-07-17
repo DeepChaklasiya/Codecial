@@ -18,8 +18,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-      min: 6,
     },
     profilePicture: {
       type: String,
@@ -27,6 +25,10 @@ const userSchema = new mongoose.Schema(
     desc: {
       type: String,
       max: 50,
+    },
+    withGoogle: {
+      type: Boolean,
+      default: false,
     },
     city: {
       type: String,

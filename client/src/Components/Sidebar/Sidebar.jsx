@@ -48,7 +48,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Feed
@@ -82,7 +82,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/videos"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Videos
@@ -100,7 +100,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Groups
@@ -134,7 +134,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Questions
@@ -152,7 +152,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Jobs
@@ -170,7 +170,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Events
@@ -188,7 +188,7 @@ export default function Sidebar() {
                 <div style={{ width: "15px" }}></div>
                 <span>
                   <Link
-                    to="/messenger"
+                    to="/"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     Courses

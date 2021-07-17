@@ -3,6 +3,7 @@ import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Profile/Profile";
 import Messenger from "./Pages/Messenger/Messenger";
 import News from "./Pages/News/News";
+import Videos from "./Pages/Videos/Videos";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
 import {
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route exact path="/news">
             {!user ? <Redirect to="/" /> : <News />}
+          </Route>
+          <Route exact path="/videos">
+            {!user ? <Redirect to="/" /> : <Videos />}
           </Route>
           <Route exact path="/profile/:username">
             <Profile />

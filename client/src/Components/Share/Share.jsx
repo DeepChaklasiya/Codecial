@@ -16,6 +16,9 @@ export default function Share() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!file) {
+      return window.alert("First select the file/photo");
+    }
     const newPost = { userId: user._id, desc: desc.current.value };
     if (file) {
       const data = new FormData();

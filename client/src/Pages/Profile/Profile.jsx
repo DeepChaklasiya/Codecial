@@ -4,13 +4,15 @@ import Sidebar from "../../Components/Sidebar/Sidebar";
 import Feed from "../../Components/Feed/Feed";
 import Rightbar from "../../Components/Rightbar/Rightbar";
 import "./profile.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { CameraAlt } from "@material-ui/icons";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { user: currentUser } = useContext(AuthContext);
 
   const [user, setUser] = useState({});
   const [file, setFile] = useState(null);
@@ -38,7 +40,6 @@ export default function Profile() {
           userId: user._id,
           profilePicture: file.name,
         };
-        console.log("updated user", updatedUser);
         const res = await axios.put(`/users/${user._id}`, updatedUser);
         localStorage.removeItem("user");
         localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -83,25 +84,27 @@ export default function Profile() {
                     }}
                   ></img>
                 </div>
-                <div
-                  className="changeProfile "
-                  style={{ width: "50px", height: "50px" }}
-                >
-                  <label
-                    htmlFor="file"
-                    className="d-flex mt-2 align-items-center justify-content-center"
-                    style={{ cursor: "pointer" }}
+                {username === currentUser.username && (
+                  <div
+                    className="changeProfile "
+                    style={{ width: "50px", height: "50px" }}
                   >
-                    <CameraAlt />
-                    <input
-                      className="d-none"
-                      id="file"
-                      type="file"
-                      accept=".jpg,.jpeg,.png"
-                      onChange={(e) => setFile(e.target.files[0])}
-                    ></input>
-                  </label>
-                </div>
+                    <label
+                      htmlFor="file"
+                      className="d-flex mt-2 align-items-center justify-content-center"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <CameraAlt />
+                      <input
+                        className="d-none"
+                        id="file"
+                        type="file"
+                        accept=".jpg,.jpeg,.png"
+                        onChange={(e) => setFile(e.target.files[0])}
+                      ></input>
+                    </label>
+                  </div>
+                )}
               </div>
               <div style={{ height: "70px" }}></div>
               <div className="text-center mb-2 h4 font-weight-bold">

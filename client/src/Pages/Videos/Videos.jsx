@@ -1,9 +1,9 @@
 import React from "react";
 import Topbar from "../../Components/Topbar/Topbar";
 import Sidebar from "../../Components/Sidebar/Sidebar";
-import NewsComponent from "../../Components/NewsComponent/NewsComponent";
+import VideosComponent from "../../Components/VideosComponent/VideosComponent";
 
-export default function News() {
+export default function Videos() {
   return (
     <div>
       <Topbar />
@@ -13,7 +13,7 @@ export default function News() {
             <Sidebar />
           </div>
           <div className="col-9">
-            <NewsComponent />
+            <VideosComponent />
           </div>
         </div>
       </div>
