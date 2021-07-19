@@ -13,16 +13,15 @@ export default function VideosComponent() {
 
   useEffect(() => {
     const setYtVideos = async () => {
-      console.log(search);
+      console.log("api key", process.env.REACT_APP_GOOGLE_API);
       if (search !== null) {
         await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${search}&key=AIzaSyBk7bBWf39XYbDoJyiqMs-jW2hs8xc18Yo&type=video&order=relevance`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${search}&key=${process.env.REACT_APP_GOOGLE_API}&type=video&order=relevance`
         )
           .then((response) => response.json())
           .then((data) => {
             setVideos(data.items);
           });
-        console.log("videos", videos);
       }
     };
     setYtVideos();
@@ -104,7 +103,7 @@ export default function VideosComponent() {
               height: "calc(100vh - 200px)",
               overflow: "scroll",
               width: "35%",
-              border: videos.length > 0 ? "1px solid black" : "0",
+              border: videos?.length > 0 ? "1px solid black" : "0",
             }}
           >
             {videos.map((video) => (
