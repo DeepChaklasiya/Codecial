@@ -202,7 +202,7 @@ export default function Register() {
                   </button> */}
                   <GoogleLogin
                     className="btn btn-block text-white font-weight-bold text-white bg-primary"
-                    clientId="953613880079-lmmbit4bgmi2luqg0gua35v08lss77u7.apps.googleusercontent.com"
+                    clientId="953613880079-npqf053gt80b5r5cfcgn9jkl5lntv0ob.apps.googleusercontent.com"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
                     cookiePolicy={"single_host_origin"}

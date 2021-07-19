@@ -8,13 +8,11 @@ export default function ProfileRightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
-  console.log("prightbar", user, currentUser);
   const [followed, setFollowed] = useState(
     currentUser?.following.includes(user._id)
   );
 
   useEffect(() => {
-    console.log();
     setFollowed(currentUser?.following.includes(user._id));
   }, [currentUser, user._id]);
 
@@ -80,9 +78,9 @@ export default function ProfileRightbar({ user }) {
               <li>
                 Relationship : &nbsp;{" "}
                 {user.relationship === 1
-                  ? "Single"
-                  : user.relationship === 2
                   ? "Married"
+                  : user.relationship === 2
+                  ? "Unmarried"
                   : "-"}
               </li>
             </ul>

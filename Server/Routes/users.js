@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 router.get("/", async (req, res) => {
   const username = req.query.username;
   const userId = req.query.userId;
-  console.log(username);
   try {
     const user = userId
       ? await User.findById(userId)
@@ -17,9 +16,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/editProfile", async (req, res) => {
+  const username = req.query.username;
+  const userId = req.query.userId;
+
+  try {
+    const user = userId
+      ? await User.findById(userId)
+      : await User.findOne({ username: username });
+    if (user === null) {
+      return res.status(200).json("User not Found");
+    }
+    // const { password, updatedAt, ...temp } = user._doc;
+    res.status(200).json(user);
+  } catch (err) {
+    return res.status(505).json(err);
+  }
+});
+
 router.put("/:id", async (req, res) => {
-  console.log("body Id", req.body.userId);
-  console.log("param Id", req.params.id);
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
@@ -31,6 +46,7 @@ router.put("/:id", async (req, res) => {
     }
 
     try {
+      console.log("coming user", req.body);
       const user = await User.findByIdAndUpdate(req.params.id, {
         $set: req.body,
       });

@@ -77,18 +77,16 @@ export default function Sidebar() {
               className="ml-2 mr-4 hoverDiv"
               style={{ borderRadius: "10px", cursor: "pointer" }}
             >
-              <div className="d-flex align-items-center my-2 ml-3">
-                <PlayCircleFilledOutlined />
-                <div style={{ width: "15px" }}></div>
-                <span>
-                  <Link
-                    to="/videos"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    Videos
-                  </Link>
-                </span>
-              </div>
+              <Link
+                to="/videos"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <div className="d-flex align-items-center my-2 ml-3">
+                  <PlayCircleFilledOutlined />
+                  <div style={{ width: "15px" }}></div>
+                  <span>Videos</span>
+                </div>
+              </Link>
             </li>
 
             <li
