@@ -43,7 +43,6 @@ router.post("/login", async (req, res) => {
     if (!user) {
       res.status(400).json("User not found");
     }
-
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
@@ -51,7 +50,7 @@ router.post("/login", async (req, res) => {
     if (!validPassword) {
       res.status(400).json("Wrong Password");
     }
-
+    console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);

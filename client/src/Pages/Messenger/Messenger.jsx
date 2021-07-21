@@ -19,6 +19,7 @@ export default function Messenger() {
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [receiverProfile, setReceiverProfile] = useState(undefined);
+  const [flag, setFlag] = useState(false);
 
   const socket = useRef();
   const scrollref = useRef();
@@ -26,6 +27,9 @@ export default function Messenger() {
 
   useEffect(() => {
     socket.current = io("ws://localhost:8000");
+  }, [socket]);
+
+  useEffect(() => {
     socket.current.on("getMessage", (data) => {
       setArrivalMessages({
         sender: data.senderId,
@@ -33,7 +37,7 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-  }, [socket]);
+  }, [socket, arrivalMessages]);
 
   useEffect(() => {
     arrivalMessages &&
@@ -48,7 +52,7 @@ export default function Messenger() {
         user.following.filter((f) => users.some((u) => u.userId === f))
       );
     });
-  }, [socket]);
+  }, [socket, user]);
 
   useEffect(() => {
     const getConversation = async () => {
@@ -102,6 +106,7 @@ export default function Messenger() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setFlag(!flag);
     const message = {
       sender: user._id,
       text: newMessages,
