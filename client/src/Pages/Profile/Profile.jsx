@@ -6,13 +6,14 @@ import Rightbar from "../../Components/Rightbar/Rightbar";
 import "./profile.css";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { CameraAlt, Edit } from "@material-ui/icons";
+import { useHistory, useParams } from "react-router-dom";
+import { CameraAlt, CodeSharp, Edit } from "@material-ui/icons";
 import { AuthContext } from "../../Context/AuthContext";
 import { Redirect } from "react-router-dom";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  let history = useHistory();
   const { user: currentUser } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [file, setFile] = useState(null);
@@ -35,31 +36,22 @@ export default function Profile() {
         console.log("Profile File Error");
       }
     };
-
     fetchUser();
   }, [username]);
 
   useEffect(() => {
-    console.log("madarchod user", currentUser);
     const updateProfile = async () => {
       try {
         if (file) {
           const updatedUser = {
             ...user,
-            userId: user._id,
             profilePicture: file.name,
           };
           const res = await axios.put(`/users/${user._id}`, updatedUser);
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(updatedUser));
-          // history.push(`/profile/${currentUser.username}`);
-          return (
-            <Redirect
-              to={{
-                pathname: `/editProfile/${currentUser.username}`,
-              }}
-            />
-          );
+          history.push(`/profile/${currentUser.username}`);
+          window.location.reload();
         }
       } catch (err) {
         console.log("Profile File Error");
@@ -70,7 +62,6 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(changeUsername, changeCity, changeFrom, changeRelationship);
     if (changeUsername.length < 3 || changeUsername.length > 20) {
       return setUsernameError("Username length must be 3 to 20");
     } else {
@@ -79,19 +70,17 @@ export default function Profile() {
           `/users/editProfile?username=${changeUsername}`
         );
         if (
-          fetchedUser._id === currentUser._id ||
+          fetchedUser.data._id === currentUser._id ||
           fetchedUser.data === "User not Found"
         ) {
           //grant permission
           const newUser = {
             ...currentUser,
-            userId: currentUser._id,
             username: changeUsername,
             city: changeCity,
             from: changeFrom,
             relationship: parseInt(changeRelationship),
           };
-          console.log("new user", newUser);
           const updatedUser = await axios.put(
             `/users/${currentUser._id}`,
             newUser
@@ -104,6 +93,8 @@ export default function Profile() {
           setChangeCity(currentUser.city);
           setChangeFrom(currentUser.from);
           setChangeRelationship(currentUser.relationship);
+          window.alert(updatedUser.data);
+          history.push(`/profile/${newUser.username}`);
           window.location.reload();
         } else {
           setUsernameError("This username is already exist");
@@ -115,6 +106,7 @@ export default function Profile() {
   };
 
   const resetInfo = () => {
+    console.log("cancle btn");
     setUsernameError(null);
     setChangeUsername(currentUser.username);
     setChangeCity(currentUser.city);
@@ -122,9 +114,14 @@ export default function Profile() {
     setChangeRelationship(currentUser.relationship);
   };
 
+  const handleUsername = (e) => {
+    setChangeUsername(e.target.value);
+  };
+
   return (
     <>
       <div>
+        {console.log("profile page")}
         <Topbar />
         <div className="container-fuild">
           <div className="row">
@@ -248,9 +245,7 @@ export default function Profile() {
                                     value={changeUsername}
                                     type="text"
                                     className="form-control"
-                                    onChange={(e) =>
-                                      setChangeUsername(e.target.value)
-                                    }
+                                    onChange={(e) => handleUsername(e)}
                                   />
                                 </div>
                               </div>
@@ -333,13 +328,13 @@ export default function Profile() {
                 )}
               </div>
               <div className="text-center mb-3">{user.desc}</div>
-
               <div className="container-fuild">
                 <div className="row">
                   <div className="col-8">
                     <Feed username={username} />
                   </div>
                   <div className="col-4">
+                    {console.log("rightbar user", user)}
                     <Rightbar user={user} />
                   </div>
                 </div>

@@ -27,6 +27,19 @@ export default function ProfileRightbar({ user }) {
         await axios.put(`/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
+
+        const flag = await axios.get(
+          `/conversations/find/${currentUser._id}/${user._id}`
+        );
+        if (!flag.data) {
+          const newConversation = {
+            senderId: currentUser._id,
+            receiverId: user._id,
+          };
+
+          const res = await axios.post("/conversations", newConversation);
+          console.log("saved", res.data);
+        }
         dispatch({ type: "FOLLOW", payload: user._id });
       }
     } catch (err) {
