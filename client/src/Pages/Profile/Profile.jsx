@@ -9,7 +9,6 @@ import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import { CameraAlt, CodeSharp, Edit } from '@material-ui/icons';
 import { AuthContext } from '../../Context/AuthContext';
-import { Redirect } from 'react-router-dom';
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -26,10 +25,10 @@ export default function Profile() {
     currentUser.relationship
   );
   const [usernameError, setUsernameError] = useState(null);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        console.log('new username', username);
         const res = await axios.get(`/users?username=${username}`);
         setUser(res.data);
       } catch (err) {
@@ -121,7 +120,6 @@ export default function Profile() {
   return (
     <>
       <div>
-        {console.log('profile page')}
         <Topbar />
         <div className="container-fuild">
           <div className="row">
