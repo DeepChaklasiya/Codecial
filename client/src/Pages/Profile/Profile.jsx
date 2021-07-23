@@ -10,6 +10,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { CameraAlt, CodeSharp, Edit } from "@material-ui/icons";
 import { AuthContext } from "../../Context/AuthContext";
 import { Redirect } from "react-router-dom";
+import {
+  DatePickerComponent,
+  DateTimePickerComponent,
+} from "@syncfusion/ej2-react-calendars";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -26,10 +30,18 @@ export default function Profile() {
     currentUser.relationship
   );
   const [usernameError, setUsernameError] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const currentDay = new Date().getDate();
+  const endDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    currentDay
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        console.log("new username", username);
         const res = await axios.get(`/users?username=${username}`);
         setUser(res.data);
       } catch (err) {
@@ -260,6 +272,32 @@ export default function Profile() {
                                   </div>
                                 </div>
                               )}
+                              <div className="form-group row d-flex align-items-center">
+                                <div className="col-4 text-left">D.O.B</div>
+                                <div className="col-8">
+                                  {/* <input
+                                    value={changeCity}
+                                    type="text"
+                                    className="form-control"
+                                    onChange={(e) =>
+                                      setChangeCity(e.target.value)
+                                    }
+                                  /> */}
+                                  <div
+                                    style={{
+                                      borderRadius: "4px",
+                                      border: "1px solid #D8D8D8",
+                                    }}
+                                  >
+                                    <DatePickerComponent
+                                      max={endDate}
+                                      start="Year"
+                                      selected={date}
+                                      onChange={(date) => setDate(date)}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                               <div className="form-group row d-flex align-items-center">
                                 <div className="col-4 text-left">City</div>
                                 <div className="col-8">
