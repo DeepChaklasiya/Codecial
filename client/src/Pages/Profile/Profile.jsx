@@ -7,9 +7,13 @@ import "./profile.css";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { CameraAlt, Edit } from "@material-ui/icons";
+import { CameraAlt, CodeSharp, Edit } from "@material-ui/icons";
 import { AuthContext } from "../../Context/AuthContext";
 import { Redirect } from "react-router-dom";
+import {
+  DatePickerComponent,
+  DateTimePickerComponent,
+} from "@syncfusion/ej2-react-calendars";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -25,10 +29,18 @@ export default function Profile() {
     currentUser.relationship
   );
   const [usernameError, setUsernameError] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const currentDay = new Date().getDate();
+  const endDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    currentDay
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        console.log("new username", username);
         const res = await axios.get(`/users?username=${username}`);
         setUser(res.data);
       } catch (err) {
@@ -40,7 +52,6 @@ export default function Profile() {
   }, [username]);
 
   useEffect(() => {
-    console.log("madarchod user", currentUser);
     const updateProfile = async () => {
       try {
         if (file) {
@@ -70,7 +81,18 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(changeUsername, changeCity, changeFrom, changeRelationship);
+
+    const newDate = new Date(date.nativeEvent.text);
+    const day =
+      newDate.getDate().length == 1
+        ? `0+${newDate.getDate()}`
+        : `${newDate.getDate()}`;
+    const month =
+      newDate.getMonth().length == 1
+        ? `0+${newDate.getMonth()}`
+        : `${newDate.getMonth()}`;
+    const year = `${newDate.getFullYear()}`;
+
     if (changeUsername.length < 3 || changeUsername.length > 20) {
       return setUsernameError("Username length must be 3 to 20");
     } else {
@@ -85,6 +107,7 @@ export default function Profile() {
           //grant permission
           const newUser = {
             ...currentUser,
+            birthdate: `${year}-${1}-${day}`,
             userId: currentUser._id,
             username: changeUsername,
             city: changeCity,
@@ -265,6 +288,32 @@ export default function Profile() {
                                   </div>
                                 </div>
                               )}
+                              <div className="form-group row d-flex align-items-center">
+                                <div className="col-4 text-left">D.O.B</div>
+                                <div className="col-8">
+                                  {/* <input
+                                    value={changeCity}
+                                    type="text"
+                                    className="form-control"
+                                    onChange={(e) =>
+                                      setChangeCity(e.target.value)
+                                    }
+                                  /> */}
+                                  <div
+                                    style={{
+                                      borderRadius: "4px",
+                                      border: "1px solid #D8D8D8",
+                                    }}
+                                  >
+                                    <DatePickerComponent
+                                      max={endDate}
+                                      start="Year"
+                                      selected={date}
+                                      onChange={(date) => setDate(date)}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                               <div className="form-group row d-flex align-items-center">
                                 <div className="col-4 text-left">City</div>
                                 <div className="col-8">
