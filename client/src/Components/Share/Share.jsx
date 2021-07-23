@@ -79,7 +79,9 @@ export default function Share() {
           <div className="d-flex my-2 ml-3">
             <img
               src={
-                user.profilePicture ? PF + user.profilePicture : PF + "15.png"
+                user.profilePicture
+                  ? PF + user.profilePicture
+                  : PF + "noUserImage.png"
               }
               alt=""
               style={{ height: "60px", width: "60px" }}

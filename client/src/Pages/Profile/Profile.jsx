@@ -258,6 +258,7 @@ export default function Profile() {
                                   </div>
                                 </div>
                               )}
+                          
                               <div className="form-group row d-flex align-items-center">
                                 <div className="col-4 text-left">City</div>
                                 <div className="col-8">
