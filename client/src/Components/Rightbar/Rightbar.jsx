@@ -71,6 +71,7 @@ export default function Rightbar({ user }) {
 
   return (
     <>
+      {console.log("rightbar render component")}
       {username ? (
         <ProfileRightbar key={user._id} user={user} />
       ) : (

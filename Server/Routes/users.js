@@ -35,7 +35,8 @@ router.get("/editProfile", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id || req.body.isAdmin) {
+  console.log("coming user", req.body);
+  if (req.body._id === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
         const salt = await bcrypt.genSalt(10);
@@ -46,7 +47,6 @@ router.put("/:id", async (req, res) => {
     }
 
     try {
-      console.log("coming user", req.body);
       const user = await User.findByIdAndUpdate(req.params.id, {
         $set: req.body,
       });
@@ -60,9 +60,6 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  // const user = await User.findOne({_id : req.params.id})
-  // const isAdmin = user.isAdmin;
-
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
@@ -142,18 +139,17 @@ router.get("/friends/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     const user = await User.findById(userId);
-    console.log(user);
     const Friends = await Promise.all(
       user.following.map((friendId) => {
         return User.findById(friendId);
       })
     );
     let friendList = [];
+    console.log("Friends", Friends);
     Friends.map((Friend) => {
       const { _id, username, profilePicture } = Friend;
       friendList.push({ _id, username, profilePicture });
     });
-    console.log(friendList);
     res.status(200).json(friendList);
   } catch (err) {
     return res.status(505).json(err);
@@ -163,7 +159,6 @@ router.get("/friends/:userId", async (req, res) => {
 router.get("/allUsers", async (req, res) => {
   try {
     const pattern = req.query.pattern;
-    console.log("upper");
     const allUsers = await User.find();
     const users = allUsers.filter((user) => {
       return user.username.includes(pattern);

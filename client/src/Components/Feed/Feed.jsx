@@ -27,6 +27,7 @@ export default function Feed({ username }) {
 
   return (
     <>
+      {console.log("feed username", username)}
       <div
         style={{
           height: "calc(100vh - 55px)",

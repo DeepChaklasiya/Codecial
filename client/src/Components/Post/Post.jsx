@@ -1,4 +1,4 @@
-import { MoreVert } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 import { useState, useEffect, useContext } from "react";
 import { format } from "timeago.js";
 import axios from "axios";
@@ -38,6 +38,16 @@ export default function Post({ post }) {
     setIsLike(!isLike);
   };
 
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`/posts/${post._id}`);
+      window.alert(res.data);
+      window.location.reload();
+    } catch (err) {
+      console.log("Post file error");
+    }
+  };
+
   return (
     <div>
       <div className="card mb-4">
@@ -46,7 +56,9 @@ export default function Post({ post }) {
             <Link to={`profile/${user.username}`}>
               <img
                 src={
-                  user.profilePicture ? PF + user.profilePicture : PF + "15.png"
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + "noUserImage.png"
                 }
                 alt=""
                 style={{ height: "27px", width: "27px" }}
@@ -58,8 +70,12 @@ export default function Post({ post }) {
               {format(post.createdAt)}
             </span>
           </div>
-          <div>
-            <MoreVert />
+          <div
+            className="mr-2"
+            onClick={handleDelete}
+            style={{ color: "#636763", cursor: "pointer" }}
+          >
+            {post.userId === currentUser._id && <Delete />}
           </div>
         </div>
         <div>
