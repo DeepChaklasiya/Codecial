@@ -29,19 +29,33 @@ export default function Rightbar({ user }) {
     });
   }, [socket]);
 
-  // useEffect(() => {
-  //   const getSongs = () => {
-  //     const api = new YoutubeMusicApi();
-  //     api
-  //       .initalize() // Retrieves Innertube Config
-  //       .then((info) => {
-  //         api.search("kabira", "song").then((result) => {
-  //           console.log(result);
-  //         });
-  //       });
-  //   };
-  //   getSongs();
-  // });
+  useEffect(() => {
+    const getSongs = () => {
+      var axios = require("axios").default;
+
+      var options = {
+        method: "POST",
+        url: "https://deezerzakutynskyv1.p.rapidapi.com/searchAlbums",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "x-rapidapi-key":
+            "0c170dd28amsh28dede860351eb0p1e1a3ajsn1574ccb6619f",
+          "x-rapidapi-host": "DeezerzakutynskyV1.p.rapidapi.com",
+        },
+        data: { searchQuery: "eminem", accessToken: "<REQUIRED>" },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    };
+    getSongs();
+  }, []);
 
   const HomeRightbar = () => {
     return (
