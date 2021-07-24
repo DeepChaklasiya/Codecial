@@ -41,14 +41,14 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      res.status(400).json("User not found");
+      return res.status(400).json("User not found");
     }
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
     if (!validPassword) {
-      res.status(400).json("Wrong Password");
+      return res.status(400).json("Wrong Password");
     }
     console.log(user);
     res.status(200).json(user);
@@ -61,7 +61,7 @@ router.post("/loginOauth", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      res.status(400).json("User not found");
+      return res.status(400).json("User not found");
     }
     res.status(200).json(user);
   } catch (err) {

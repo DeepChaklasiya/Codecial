@@ -52,6 +52,7 @@ export default function Topbar() {
   const onLogout = () => {
     localStorage.removeItem("user");
     localStorage.clear();
+    history.push("/register");
     window.location.reload();
   };
 

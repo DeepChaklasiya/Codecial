@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
       return res.status(200).json(null);
     }
     const { password, updatedAt, ...temp } = user._doc;
+    res.status(200).json(temp);
   } catch (err) {
     return res.status(505).json(err);
   }
@@ -26,6 +27,7 @@ router.get("/email", async (req, res) => {
       return res.status(200).json(null);
     }
     const { password, updatedAt, ...temp } = user._doc;
+
     res.status(200).json(temp);
   } catch (err) {
     return res.status(505).json(err);

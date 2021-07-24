@@ -11,14 +11,17 @@ export default function Login() {
   const email = useRef();
   const password = useRef();
   const [isError, setIsError] = useState(false);
-
+  const [newError, setNewError] = useState(null);
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const handleSubmit = (event) => {
     event.preventDefault();
+    setNewError(false);
     loginCall(
       { email: email.current.value, password: password.current.value },
       dispatch
     );
+    setNewError(error);
+    console.log("Error", newError);
   };
 
   const responseGoogle = async (response) => {
@@ -90,7 +93,6 @@ export default function Login() {
           <div
             className="card"
             style={{
-              height: "400px",
               width: "400px",
               marginTop: isError ? "0px" : "25px",
               marginLeft: "50px",
@@ -101,7 +103,6 @@ export default function Login() {
             <div
               style={{
                 width: "350px",
-                height: "300px",
                 marginTop: "25px",
                 marginLeft: "25px",
               }}
@@ -142,7 +143,9 @@ export default function Login() {
                     placeholder="Password"
                   />
                 </div>
-
+                {newError && !isFetching && (
+                  <div className="text-danger">Invalid email or password</div>
+                )}
                 <div
                   className="d-flex align-items-center mb-3"
                   style={{
@@ -206,7 +209,7 @@ export default function Login() {
 
               <Link to="/register" style={{ textDecoration: "none" }}>
                 <div
-                  className="d-flex align-items-center mb-1 mx-auto"
+                  className="d-flex align-items-center mb-2 mx-auto"
                   style={{
                     width: "70%",
                     height: "45px",

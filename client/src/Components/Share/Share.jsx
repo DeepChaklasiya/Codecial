@@ -85,7 +85,7 @@ export default function Share() {
               src={URL.createObjectURL(file)}
               alt=""
               className="my-2 mx-4"
-              style={{ height: "350px", width: "650px" }}
+              style={{ height: "350px", width: "635px" }}
             ></img>
             <Cancel
               onClick={() => setFile(null)}

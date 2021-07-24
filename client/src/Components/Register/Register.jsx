@@ -16,12 +16,14 @@ export default function Register() {
   const [usernameError, setUsernameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setUsernameError(null);
     setEmailError(null);
     setPasswordError(null);
+    setConfirmPasswordError(null);
     if (!username.current.value) {
       return setUsernameError("Username can't be empty");
     }
@@ -46,8 +48,12 @@ export default function Register() {
       console.log(err);
     }
 
-    if (!email.current.value) {
-      return setEmailError("Email can't be empty");
+    if (password.current.value.length < 6) {
+      return setPasswordError("Password length must be more than 6");
+    }
+
+    if (password.current.value != confirmPassword.current.value) {
+      return setConfirmPasswordError("Password doesn't match");
     }
 
     // if (password.current.value !== confirmPassword.current.value) {
@@ -99,7 +105,6 @@ export default function Register() {
         style={{
           position: "absolute",
           width: "1000px",
-          height: "500px",
           margin: "150px 200px",
           backgroundColor: "#E0E0E0",
         }}
@@ -116,9 +121,8 @@ export default function Register() {
         </div>
         <div style={{ width: "50%", height: "100%" }}>
           <div
-            className="card"
+            className="card my-3"
             style={{
-              height: "460px",
               width: "400px",
               marginTop: "25px",
               marginLeft: "50px",
@@ -129,7 +133,6 @@ export default function Register() {
             <div
               style={{
                 width: "350px",
-                height: "300px",
                 marginTop: "20px",
                 marginLeft: "25px",
               }}
@@ -150,7 +153,6 @@ export default function Register() {
                 >
                   <input
                     type="text"
-                    required
                     ref={username}
                     className="form-control border-0"
                     placeholder="Username"
@@ -174,7 +176,6 @@ export default function Register() {
                 >
                   <input
                     type="email"
-                    required
                     ref={email}
                     className="form-control border-0"
                     placeholder="Email"
@@ -184,7 +185,11 @@ export default function Register() {
                   <div className="text-danger mb-2 ml-1">{emailError}</div>
                 )}
                 <div
-                  className="d-flex align-items-center mb-3"
+                  className={
+                    passwordError
+                      ? "d-flex align-items-center"
+                      : "d-flex align-items-center mb-3"
+                  }
                   style={{
                     width: "100%",
                     height: "50px",
@@ -194,16 +199,20 @@ export default function Register() {
                 >
                   <input
                     type="password"
-                    required
                     ref={password}
-                    minLength="6"
                     className="form-control border-0"
                     placeholder="Password"
                   />
                 </div>
-
+                {passwordError && (
+                  <div className="text-danger mb-2 ml-1">{passwordError}</div>
+                )}
                 <div
-                  className="d-flex align-items-center mb-3"
+                  className={
+                    confirmPasswordError
+                      ? "d-flex align-items-center"
+                      : "d-flex align-items-center mb-3"
+                  }
                   style={{
                     width: "100%",
                     height: "50px",
@@ -213,13 +222,16 @@ export default function Register() {
                 >
                   <input
                     type="password"
-                    required
                     ref={confirmPassword}
                     className="form-control border-0"
                     placeholder="Confirm Password"
                   />
                 </div>
-
+                {confirmPasswordError && (
+                  <div className="text-danger mb-2 ml-1">
+                    {confirmPasswordError}
+                  </div>
+                )}
                 <div
                   className="d-flex align-items-center mb-3"
                   style={{
@@ -246,9 +258,6 @@ export default function Register() {
                     borderRadius: "5px",
                   }}
                 >
-                  {/* <button type="submit" style={{ backgroundColor: "#1775EE" }}>
-                    Sign Up
-                  </button> */}
                   <GoogleLogin
                     className="btn btn-block text-white font-weight-bold text-white bg-primary"
                     clientId="953613880079-npqf053gt80b5r5cfcgn9jkl5lntv0ob.apps.googleusercontent.com"
@@ -269,7 +278,7 @@ export default function Register() {
 
               <Link to="/login" style={{ textDecoration: "none" }}>
                 <div
-                  className="d-flex align-items-center mb-1 mx-auto"
+                  className="d-flex align-items-center mb-2 mx-auto"
                   style={{
                     width: "70%",
                     height: "45px",

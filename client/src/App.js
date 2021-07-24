@@ -23,7 +23,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            {user ? <Home /> : <Register />}
+            {user ? <Home /> : <Redirect to="/register"></Redirect>}
           </Route>
           <Route exact path="/login">
             {user ? <Redirect to="/" /> : <Login />}
