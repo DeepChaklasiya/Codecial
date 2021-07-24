@@ -6,6 +6,8 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import axios from "axios";
+const YoutubeMusicApi = require("youtube-music-api");
 
 export default function Rightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -27,13 +29,30 @@ export default function Rightbar({ user }) {
     });
   }, [socket]);
 
+  // useEffect(() => {
+  //   const getSongs = () => {
+  //     const api = new YoutubeMusicApi();
+  //     api
+  //       .initalize() // Retrieves Innertube Config
+  //       .then((info) => {
+  //         api.search("kabira", "song").then((result) => {
+  //           console.log(result);
+  //         });
+  //       });
+  //   };
+  //   getSongs();
+  // });
+
   const HomeRightbar = () => {
     return (
       <div
         className="container-fluid"
-        style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
+        style={{
+          height: "calc(100vh - 55px)",
+          overflow: "scroll",
+        }}
       >
-        <div className="row">
+        {/* <div className="row">
           <div className="d-flex my-3 mx-2">
             <div>
               <img src={`${PF}gift.png`} height="40px" width="40px"></img>
@@ -44,8 +63,13 @@ export default function Rightbar({ user }) {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="row">
+          <div className="ml-1 mt-3 mb-1">
+            <span>
+              <b>Advertisment :</b>
+            </span>
+          </div>
           <div className="my-1 ml-2">
             <img
               src={`${PF}add.png`}
@@ -71,7 +95,6 @@ export default function Rightbar({ user }) {
 
   return (
     <>
-      {console.log("rightbar render component")}
       {username ? (
         <ProfileRightbar key={user._id} user={user} />
       ) : (

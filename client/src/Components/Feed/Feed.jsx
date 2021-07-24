@@ -1,7 +1,6 @@
 import "./feed.css";
 import Share from "../Share/Share";
 import Post from "../Post/Post";
-// import { Posts } from "../../dummyData";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
@@ -27,11 +26,11 @@ export default function Feed({ username }) {
 
   return (
     <>
-      {console.log("feed username", username)}
       <div
         style={{
           height: "calc(100vh - 55px)",
-          overflow: "scroll",
+          overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
         {(!username || username === user.username) && <Share />}

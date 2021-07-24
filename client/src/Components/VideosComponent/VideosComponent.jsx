@@ -13,10 +13,9 @@ export default function VideosComponent() {
 
   useEffect(() => {
     const setYtVideos = async () => {
-      console.log("api key", process.env.REACT_APP_GOOGLE_API);
       if (search !== null) {
         await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${search}&key=${process.env.REACT_APP_GOOGLE_API}&type=video&order=relevance`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${search}&key=AIzaSyBk7bBWf39XYbDoJyiqMs-jW2hs8xc18Yo&type=video&order=relevance`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -99,6 +98,7 @@ export default function VideosComponent() {
             )}
           </div>
           <div
+            className="mr-2"
             style={{
               height: "calc(100vh - 200px)",
               overflow: "scroll",

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
@@ -13,24 +13,59 @@ export default function Register() {
   const confirmPassword = useRef();
   const history = useHistory();
 
+  const [usernameError, setUsernameError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password.current.value !== confirmPassword.current.value) {
-      confirmPassword.current.setCustomValidity("Password dont match");
-    } else {
-      const user = {
-        username: username.current.value,
-        email: email.current.value,
-        password: password.current.value,
-      };
-
-      try {
-        const res = await axios.post("/auth/register", user);
-        history.push("/login");
-      } catch (err) {
-        console.log("error", err);
-      }
+    setUsernameError(null);
+    setEmailError(null);
+    setPasswordError(null);
+    if (!username.current.value) {
+      return setUsernameError("Username can't be empty");
     }
+    try {
+      const res = await axios.get(`/users?username=${username.current.value}`);
+      if (res.data) {
+        return setUsernameError("Username already exist");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!email.current.value) {
+      return setEmailError("Email can't be empty");
+    }
+    try {
+      const res = await axios.get(`/users/email?email=${email.current.value}`);
+      if (res.data) {
+        return setEmailError("Email already exist");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!email.current.value) {
+      return setEmailError("Email can't be empty");
+    }
+
+    // if (password.current.value !== confirmPassword.current.value) {
+    //   confirmPassword.current.setCustomValidity("Password dont match");
+    // } else {
+    const user = {
+      username: username.current.value,
+      email: email.current.value,
+      password: password.current.value,
+    };
+
+    try {
+      const res = await axios.post("/auth/register", user);
+      history.push("/login");
+    } catch (err) {
+      console.log("error", err);
+    }
+    // }
   };
 
   const responseGoogle = async (res) => {
@@ -101,7 +136,11 @@ export default function Register() {
             >
               <form onSubmit={handleSubmit}>
                 <div
-                  className="d-flex align-items-center mb-3"
+                  className={
+                    usernameError
+                      ? "d-flex align-items-center"
+                      : "d-flex align-items-center mb-3"
+                  }
                   style={{
                     width: "100%",
                     height: "50px",
@@ -117,8 +156,15 @@ export default function Register() {
                     placeholder="Username"
                   />
                 </div>
+                {usernameError && (
+                  <div className="text-danger mb-2 ml-1">{usernameError}</div>
+                )}
                 <div
-                  className="d-flex align-items-center mb-3"
+                  className={
+                    emailError
+                      ? "d-flex align-items-center"
+                      : "d-flex align-items-center mb-3"
+                  }
                   style={{
                     width: "100%",
                     height: "50px",
@@ -134,6 +180,9 @@ export default function Register() {
                     placeholder="Email"
                   />
                 </div>
+                {emailError && (
+                  <div className="text-danger mb-2 ml-1">{emailError}</div>
+                )}
                 <div
                   className="d-flex align-items-center mb-3"
                   style={{

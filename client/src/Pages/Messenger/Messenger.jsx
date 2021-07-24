@@ -37,7 +37,7 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-  }, [socket, arrivalMessages]);
+  }, [socket]);
 
   useEffect(() => {
     arrivalMessages &&

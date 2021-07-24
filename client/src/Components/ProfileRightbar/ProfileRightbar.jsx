@@ -38,10 +38,10 @@ export default function ProfileRightbar({ user }) {
           };
 
           const res = await axios.post("/conversations", newConversation);
-          console.log("saved", res.data);
         }
         dispatch({ type: "FOLLOW", payload: user._id });
       }
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -61,10 +61,13 @@ export default function ProfileRightbar({ user }) {
   }, [user]);
 
   return (
-    <div className="mr-1">
+    <div className="mr-1" style={{ maxWidth: "100%", overflowX: "hidden" }}>
       <div
         className="container-fluid"
-        style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}
+        style={{
+          height: "calc(100vh - 55px)",
+          overflow: "scroll",
+        }}
       >
         {user?.username !== currentUser?.username && (
           <div className="row mb-3 mb-2">

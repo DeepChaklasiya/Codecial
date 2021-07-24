@@ -49,7 +49,7 @@ export default function Post({ post }) {
   };
 
   return (
-    <div>
+    <div style={{ width: "99%" }}>
       <div className="card mb-4">
         <div className="d-flex justify-content-between my-2 ml-3">
           <div>
@@ -87,7 +87,7 @@ export default function Post({ post }) {
             src={PF + post.img}
             alt=""
             className="my-2 mx-3"
-            style={{ height: "400px", width: "670px" }}
+            style={{ height: "400px", width: "655px" }}
           ></img>
         </div>
         <div className="mx-3 my-3 d-flex justify-content-between">

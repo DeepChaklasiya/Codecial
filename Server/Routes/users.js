@@ -9,6 +9,22 @@ router.get("/", async (req, res) => {
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ username: username });
+    if (!user) {
+      return res.status(200).json(null);
+    }
+    const { password, updatedAt, ...temp } = user._doc;
+  } catch (err) {
+    return res.status(505).json(err);
+  }
+});
+
+router.get("/email", async (req, res) => {
+  const email = req.query.email;
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(200).json(null);
+    }
     const { password, updatedAt, ...temp } = user._doc;
     res.status(200).json(temp);
   } catch (err) {

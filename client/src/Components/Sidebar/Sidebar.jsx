@@ -36,7 +36,14 @@ export default function Sidebar() {
 
   return (
     <>
-      <div style={{ height: "calc(100vh - 55px)", overflow: "scroll" }}>
+      <div
+        style={{
+          maxWidth: "100%",
+          overflowX: "hidden",
+          height: "calc(100vh - 55px)",
+          overflow: "scroll",
+        }}
+      >
         <div>
           <ul className="list-group">
             <li
@@ -209,12 +216,18 @@ export default function Sidebar() {
           </div>
 
           <hr style={{ margin: "20px 0" }} />
-
-          <ul className="list-group overflow-scroll">
-            {friends.map((user) => (
-              <CloseFriend key={user._id} user={user} />
-            ))}
-          </ul>
+          <div className="ml-3 mb-1">
+            <b>Your Friends :</b>
+          </div>
+          {friends.length ? (
+            <ul className="list-group overflow-scroll">
+              {friends.map((user) => (
+                <CloseFriend key={user._id} user={user} />
+              ))}
+            </ul>
+          ) : (
+            <div className="ml-3 my-2">No Friends</div>
+          )}
         </div>
       </div>
     </>
