@@ -40,11 +40,22 @@ export default function Profile() {
   useEffect(() => {
     const updateProfile = async () => {
       try {
+        const updatedUser = {
+          ...user,
+          profilePicture: fileProfile.name,
+        };
         if (fileProfile) {
-          const updatedUser = {
-            ...user,
-            profilePicture: fileProfile.name,
-          };
+          const dataP = new FormData();
+          const filenameP = Date.now() + fileProfile.name;
+          dataP.append("name", filenameP);
+          dataP.append("file", fileProfile);
+          updatedUser.profilePicture = filenameP;
+          try {
+            await axios.post("/upload", dataP);
+          } catch (err) {
+            console.log(err);
+          }
+
           const res = await axios.put(`/users/${user._id}`, updatedUser);
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(updatedUser));
