@@ -4,6 +4,9 @@ Codecial is a React.js / Node.js social media web application, where user can sh
 
 [This](https://github.com/JaimisMiyani/Codecial) is a link to the codecial github repository.
 
+[This](https://codecial.netlify.app/) is a link to the website.
+
+
 ## Screenshots
 Register Page
 
